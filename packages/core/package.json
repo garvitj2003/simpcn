@@ -1,0 +1,13 @@
+{
+  "name": "@assets-cdn/core",
+  "version": "0.1.0",
+  "type": "module",
+  "files": ["dist"],
+  "exports": {".": {"types": "./dist/index.d.ts", "import": "./dist/index.js"}},
+  "engines": {"node": ">=24"},
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  }
+}
