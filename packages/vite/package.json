@@ -1,0 +1,39 @@
+{
+  "name": "@simpcn/vite",
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "client.d.ts"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./client": { "types": "./client.d.ts" }
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  },
+  "keywords": [
+    "vite-plugin"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@simpcn/core": "workspace:*",
+    "@babel/parser": "^8.0.7",
+    "@babel/types": "^8.0.6",
+    "magic-string": "^1.4.3",
+    "parse5": "^8.0.1",
+    "postcss": "^8.5.29",
+    "postcss-value-parser": "^4.2.0"
+  },
+  "peerDependencies": {
+    "vite": "^8.0.0"
+  }
+}

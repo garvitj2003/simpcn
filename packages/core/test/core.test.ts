@@ -11,7 +11,7 @@ import {
 let fixture: string;
 let root: string;
 beforeEach(async () => {
-  fixture = await mkdtemp(path.join(tmpdir(), 'assets-cdn-'));
+  fixture = await mkdtemp(path.join(tmpdir(), 'simpcn-'));
   root = path.join(fixture, 'public');
   await mkdir(root);
 });

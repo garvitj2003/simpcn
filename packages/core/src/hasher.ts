@@ -3,13 +3,14 @@ import { constants } from 'node:fs';
 import { open } from 'node:fs/promises';
 
 /** Streams bytes; rejects files that change while hashing. */
-export async function hashAsset(absolutePath: string): Promise<string> {
+export async function hashAsset(absolutePath: string, signal?: AbortSignal): Promise<string> {
+  signal?.throwIfAborted();
   const file = await open(absolutePath, constants.O_RDONLY | constants.O_NOFOLLOW);
   try {
     const before = await file.stat({ bigint: true });
     if (!before.isFile()) throw new Error(`Not a regular file: ${absolutePath}`);
     const hash = createHash('sha256');
-    for await (const chunk of file.createReadStream({ autoClose: false })) hash.update(chunk);
+    for await (const chunk of file.createReadStream({ autoClose: false, signal })) hash.update(chunk);
     const after = await file.stat({ bigint: true });
     if (before.size !== after.size || before.mtimeNs !== after.mtimeNs || before.ctimeNs !== after.ctimeNs) {
       throw new Error(`Asset changed while hashing: ${absolutePath}`);

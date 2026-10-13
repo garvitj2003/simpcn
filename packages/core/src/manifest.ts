@@ -9,7 +9,7 @@ export async function generateManifest(options: ScanOptions & { concurrency?: nu
   const records = await mapConcurrent(assets, options.concurrency ?? 8, async asset => {
     const before = await lstat(asset.absolutePath, { bigint: true });
     const metadata = await analyzeAsset(asset);
-    const hash = await hashAsset(asset.absolutePath);
+    const hash = await hashAsset(asset.absolutePath, options.signal);
     const after = await lstat(asset.absolutePath, { bigint: true });
     if (before.ino !== after.ino || before.dev !== after.dev || before.size !== after.size ||
         before.mtimeNs !== after.mtimeNs || before.ctimeNs !== after.ctimeNs) {

@@ -1,13 +1,29 @@
 {
-  "name": "@assets-cdn/core",
+  "name": "@simpcn/core",
   "version": "0.1.0",
   "type": "module",
-  "files": ["dist"],
-  "exports": {".": {"types": "./dist/index.d.ts", "import": "./dist/index.js"}},
-  "engines": {"node": ">=24"},
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./delivery": {
+      "types": "./dist/delivery.d.ts",
+      "import": "./dist/delivery.js"
+    }
+  },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "jiti": "^2.7.0"
   }
 }

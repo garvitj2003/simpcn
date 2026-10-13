@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
 .pnpm-store/
+.simpcn/
 
 # Build output and caches
 dist/
@@ -22,3 +23,6 @@ coverage/
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Local npm package archives
+artifacts/

@@ -1,0 +1,31 @@
+{
+  "name": "simpcn",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "simpcn": "dist/bin.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node -e \"require('node:fs').chmodSync('dist/bin.js', 0o755)\"",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^8.7.3",
+    "@simpcn/core": "workspace:*",
+    "@simpcn/storage-s3": "workspace:*",
+    "picocolors": "^1.1.1"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/config.d.ts",
+      "import": "./dist/config.js"
+    }
+  }
+}

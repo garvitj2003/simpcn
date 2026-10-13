@@ -1,6 +1,7 @@
 export interface ScanOptions {
   root?: string;
   exclude?: readonly string[];
+  signal?: AbortSignal;
 }
 export interface ScannedAsset {
   absolutePath: string;

@@ -1,13 +1,19 @@
 {
-  "name": "assets-cdn",
+  "name": "simpcn-workspace",
   "version": "1.0.0",
   "private": true,
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "pnpm --filter @assets-cdn/core test",
-    "build": "pnpm --filter @assets-cdn/core build",
-    "typecheck": "pnpm --filter @assets-cdn/core typecheck"
+    "test": "pnpm build && pnpm --filter @simpcn/core test && pnpm --filter @simpcn/storage-s3 test && pnpm --filter simpcn test && pnpm --filter @simpcn/vite test",
+    "build": "pnpm --filter @simpcn/core build && pnpm --filter @simpcn/storage-s3 build && pnpm --filter simpcn build && pnpm --filter @simpcn/vite build",
+    "typecheck": "pnpm --filter @simpcn/core typecheck && pnpm --filter @simpcn/storage-s3 typecheck && pnpm --filter simpcn typecheck && pnpm --filter @simpcn/vite typecheck",
+    "simpcn": "node packages/cli/dist/bin.js",
+    "test:cli:minio": "pnpm build && node --env-file-if-exists=.env.local node_modules/vitest/vitest.mjs run packages/cli/test/minio.live.test.ts",
+    "minio:plan": "pnpm build && node --env-file-if-exists=.env.local examples/minio.mjs",
+    "minio:migrate": "pnpm build && node --env-file-if-exists=.env.local examples/minio.mjs --execute",
+    "test:minio": "pnpm build && node --env-file-if-exists=.env.local node_modules/vitest/vitest.mjs run packages/storage-s3/test/minio.live.test.ts",
+    "pack:local": "pnpm build && pnpm --filter @simpcn/core --filter @simpcn/storage-s3 --filter simpcn --filter @simpcn/vite pack --pack-destination artifacts"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +31,7 @@
     "@types/node": "^24.19.2",
     "tsup": "^8.5.1",
     "typescript": "^7.0.2",
-    "vitest": "^5.0.3"
+    "vitest": "^5.0.3",
+    "simpcn": "workspace:*"
   }
 }

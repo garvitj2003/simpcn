@@ -14,11 +14,13 @@ export function assertAssetPath(value: string): void {
 }
 
 export async function scanAssets(options: ScanOptions = {}): Promise<ScannedAsset[]> {
+  options.signal?.throwIfAborted();
   const root = await realpath(options.root ?? 'public');
   if (!(await lstat(root)).isDirectory()) throw new Error('Asset root must be a directory');
   const assets: ScannedAsset[] = [];
   async function walk(directory: string, prefix: string): Promise<void> {
     for (const entry of await readdir(directory, { withFileTypes: true })) {
+      options.signal?.throwIfAborted();
       const relativePath = prefix ? `${prefix}/${entry.name}` : entry.name;
       assertAssetPath(relativePath);
       if (options.exclude?.some(pattern => path.posix.matchesGlob(relativePath, pattern))) continue;
