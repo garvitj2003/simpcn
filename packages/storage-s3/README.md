@@ -7,7 +7,7 @@ import { createMinioAdapter } from '@simpcn/storage-s3';
 import { executeMigration, LocalDeploymentStateStore } from '@simpcn/core';
 
 const adapter = createMinioAdapter({
-  endpoint: 'http://192.168.1.14:9000',
+  endpoint: 'http://localhost:9000',
   bucket: 'simpcn-test',
   region: 'us-east-1',
   prefix: 'mvp',

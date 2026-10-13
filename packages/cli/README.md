@@ -28,7 +28,7 @@ already exist: initialization does not create buckets or change access policies.
 An existing configuration requires `--force` to replace.
 
 ```sh
-npx simpcn init --yes --framework vite --provider minio --endpoint http://192.168.1.14:9000 --bucket test-cn --prefix assets
+npx simpcn init --yes --framework vite --provider minio --endpoint http://localhost:9000 --bucket test-cn --prefix assets
 ```
 
 Use `--skip-install` to install the integration yourself. For local unpublished
@@ -54,7 +54,7 @@ export default {
   storage: {
     provider: 'minio',
     // Storage API origin for uploads, not the public CDN URL.
-    endpoint: 'http://192.168.1.14:9000',
+    endpoint: 'http://localhost:9000',
     bucket: 'test-cn',
     prefix: 'assets',
   },

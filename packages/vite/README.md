@@ -54,7 +54,7 @@ export default {
   "publicBaseUrl": "https://cdn.example.com/mvp/",
   "storage": {
     "provider": "minio",
-    "endpoint": "http://192.168.1.14:9000",
+    "endpoint": "http://localhost:9000",
     "bucket": "simpcn-test",
     "region": "us-east-1",
     "prefix": "mvp"
@@ -66,7 +66,7 @@ export default {
 `publicBaseUrl` names the public root of the uploaded namespace, **including any
 storage prefix or CDN path mapping**. The resolver appends only the relative asset
 key. For path-style MinIO without a CDN, the equivalent is
-`http://192.168.1.14:9000/simpcn-test/mvp/`. Storage credentials do not make that URL
+`http://localhost:9000/simpcn-test/mvp/`. Storage credentials do not make that URL
 public: anonymous read access or a publicly accessible CDN origin is required.
 The plugin never changes bucket permissions.
 
