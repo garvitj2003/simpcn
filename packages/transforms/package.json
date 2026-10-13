@@ -27,5 +27,17 @@
     "parse5": "^8.0.1",
     "postcss": "^8.5.29",
     "postcss-value-parser": "^4.2.0"
-  }
+  },
+  "description": "Shared parser-based asset URL transformations for simpcn framework adapters.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garvitj2003/simpcn.git",
+    "directory": "packages/transforms"
+  },
+  "homepage": "https://github.com/garvitj2003/simpcn#readme",
+  "bugs": {
+    "url": "https://github.com/garvitj2003/simpcn/issues"
+  },
+  "author": "Garvit jain"
 }

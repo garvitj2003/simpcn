@@ -32,5 +32,17 @@
   },
   "peerDependencies": {
     "vite": "^8.0.0"
-  }
+  },
+  "description": "Vite integration for delivering verified public assets directly from storage or a CDN.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garvitj2003/simpcn.git",
+    "directory": "packages/vite"
+  },
+  "homepage": "https://github.com/garvitj2003/simpcn#readme",
+  "bugs": {
+    "url": "https://github.com/garvitj2003/simpcn/issues"
+  },
+  "author": "Garvit jain"
 }

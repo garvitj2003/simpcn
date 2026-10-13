@@ -46,5 +46,17 @@
     "@babel/parser": "^8.0.7",
     "react": "19.3.0",
     "react-dom": "19.3.0"
-  }
+  },
+  "description": "Next.js integration for verified public assets with Turbopack and webpack.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garvitj2003/simpcn.git",
+    "directory": "packages/next"
+  },
+  "homepage": "https://github.com/garvitj2003/simpcn#readme",
+  "bugs": {
+    "url": "https://github.com/garvitj2003/simpcn/issues"
+  },
+  "author": "Garvit jain"
 }

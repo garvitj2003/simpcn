@@ -27,5 +27,17 @@
       "types": "./dist/config.d.ts",
       "import": "./dist/config.js"
     }
-  }
+  },
+  "description": "CLI for migrating frontend public assets to CDN-backed object storage.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garvitj2003/simpcn.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/garvitj2003/simpcn#readme",
+  "bugs": {
+    "url": "https://github.com/garvitj2003/simpcn/issues"
+  },
+  "author": "Garvit jain"
 }

@@ -22,5 +22,17 @@
   "dependencies": {
     "@simpcn/core": "workspace:*",
     "@aws-sdk/client-s3": "^3.1149.0"
-  }
+  },
+  "description": "S3-compatible storage adapter for simpcn with AWS S3, MinIO and R2 configuration.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garvitj2003/simpcn.git",
+    "directory": "packages/storage-s3"
+  },
+  "homepage": "https://github.com/garvitj2003/simpcn#readme",
+  "bugs": {
+    "url": "https://github.com/garvitj2003/simpcn/issues"
+  },
+  "author": "Garvit jain"
 }

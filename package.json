@@ -1,6 +1,6 @@
 {
   "name": "simpcn-workspace",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "",
   "main": "index.js",
@@ -16,8 +16,8 @@
     "pack:local": "pnpm build && pnpm --filter @simpcn/core --filter @simpcn/storage-s3 --filter simpcn --filter @simpcn/vite --filter @simpcn/transforms --filter @simpcn/next pack --pack-destination artifacts"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Garvit jain",
+  "license": "MIT",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
