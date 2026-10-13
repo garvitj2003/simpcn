@@ -1,129 +1,154 @@
-# simpcn
+# simpcn — v0 MVP
 
-A framework-agnostic foundation for moving frontend public assets to CDN-backed
-object storage. The local MVP discovers and fingerprints assets, plans changes,
-and uploads through an S3-compatible storage adapter. Framework URL integration
-and CDN delivery are future work.
+Move frontend `public/` assets to CDN-backed object storage without manually
+rewriting supported static references. Simpcn scans and fingerprints files,
+plans changes, uploads and verifies assets, and rewrites production references
+through Vite or Next.js. Development continues to use local public assets.
 
-## Packages
+The packages are versioned **0.1.0** and have not been published to npm yet.
+Use local archives for controlled testing. Requires Node.js 24.11+.
 
-- `@simpcn/core`: scanner, analyzer, hasher, deterministic manifest generator,
-  diff engine, dry-run planner, migration executor and local deployment state.
-- `@simpcn/storage-s3`: streamed S3-compatible uploads and remote metadata
-  checks, including a MinIO configuration factory.
-- `simpcn`: the `simpcn` executable with init, plan and migrate commands.
-- `@simpcn/vite`: production URL rewriting for Vite 8 projects, with shared
-  delivery resolution and local development behavior. See its package README.
-- `apps/web`: frontend scaffold and sample public assets.
+## Local installation
 
-Requires Node.js 24+ and the repository's pinned pnpm version.
-The Vite package requires Node.js 24.11+ because of its parser dependencies.
-
-## Vite integration
-
-Add `publicBaseUrl` to `simpcn.config.ts`, naming the public root of the uploaded
-namespace (including a storage prefix when needed). Add `simpcn()` from
-`@simpcn/vite` before framework plugins in `vite.config.ts`, then migrate and
-build. Supported static HTML/JSX/CSS references become direct delivery URLs in
-production; local development references remain local. Builds check fresh hashes
-against deployment history without uploading or making storage requests.
-
-The workspace's intended MinIO delivery base is
-`http://192.168.1.14:9000/simpcn-test/mvp/`. Anonymous reads are enabled for `simpcn-test/mvp/*`, and the five sample
-assets have been verified to download successfully over the local network.
-Storage permissions are not changed by the plugin. The plugin and its support
-boundaries are documented in [`packages/vite/README.md`](packages/vite/README.md).
+From this repository:
 
 ```sh
 pnpm install
-pnpm build
+pnpm pack:local
+```
+
+From your application's directory, install the unpublished dependencies together
+(replace `/path/to/simpcn` with this checkout):
+
+```sh
+npm install -D \
+  /path/to/simpcn/artifacts/simpcn-core-0.1.0.tgz \
+  /path/to/simpcn/artifacts/simpcn-storage-s3-0.1.0.tgz \
+  /path/to/simpcn/artifacts/simpcn-transforms-0.1.0.tgz \
+  /path/to/simpcn/artifacts/simpcn-0.1.0.tgz
+```
+
+Add **one** framework adapter:
+
+```sh
+# Next.js
+npm install -D /path/to/simpcn/artifacts/simpcn-next-0.1.0.tgz
+
+# Or Vite
+npm install -D /path/to/simpcn/artifacts/simpcn-vite-0.1.0.tgz
+```
+
+Direct npm links to workspace packages can fail on `workspace:*`. Packed archives
+replace those dependency ranges with package versions. Repack and reinstall
+archives after library changes; they are snapshots rather than live links.
+
+## Project setup
+
+```sh
+npx simpcn init
+```
+
+Init detects and confirms Vite, Next.js or core-only setup, asks for the storage
+provider, and creates `simpcn.config.ts`. Bucket defaults to the project name;
+prefix defaults to `assets`. Existing declared adapters are not reinstalled.
+For unpublished installation through the wizard, use `--integration-package`
+with your adapter archive. Flags and `--yes` support noninteractive setup.
+
+Fill in the commented `storage.endpoint` when using MinIO/R2, and set
+`publicBaseUrl` to the public delivery root including any asset prefix. That URL
+is never auto-derived. Buckets must already exist; configure anonymous reads or
+CDN-to-origin access separately.
+
+Copy `.env.example` to `.env.local` and enter credentials:
+
+```dotenv
+AWS_ACCESS_KEY_ID=your-access-key
+AWS_SECRET_ACCESS_KEY=your-secret-key
+```
+
+The CLI automatically loads `.env` and `.env.local` beside the discovered config;
+shell variables take precedence. Init adds these files and `.simpcn/` to
+`.gitignore`. Keep credentials out of `VITE_` and `NEXT_PUBLIC_` variables.
+
+## Framework configuration
+
+Init prints instructions and leaves framework configuration files untouched.
+
+```ts
+// next.config.ts
+import { withSimpcn } from '@simpcn/next';
+export default withSimpcn({ /* existing Next settings */ });
+```
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { simpcn } from '@simpcn/vite';
+export default defineConfig({ plugins: [simpcn(), react()] });
+```
+
+See [Next.js details](packages/next/README.md),
+[Vite details](packages/vite/README.md), and [CLI options](packages/cli/README.md).
+
+## Migration and production
+
+```sh
+npx simpcn plan
+npx simpcn plan --check-remote
+npx simpcn migrate
+npm run build
+```
+
+Only `migrate` uploads. Different remote content requires an explicit
+`migrate --overwrite`. Removed local files are reported rather than deleted
+remotely. Successful progress survives partial failure. Framework builds read
+fresh local bytes and verified deployment state without contacting storage.
+They fail for missing public URLs or stale/missing managed asset verification.
+
+The default `.simpcn/manifest.json` is the last complete local migration baseline;
+`.simpcn/deployment-state.json` records uploads and verification separately.
+Keep matching deployment-state artifacts available for CI builds, or run migration
+as a separate credentialed step. A local record does not prove current anonymous
+access or CDN freshness. Source and public files stay in place.
+
+## v0 scope
+
+- MinIO uploads and browser delivery have been tested on a local network. AWS S3
+  and R2 use the S3-compatible adapter but have not been live-validated.
+- Vite 8 handles supported HTML, JSX/TSX and bundled CSS references. Vue/Svelte
+  template syntax is not automatically transformed.
+- Next.js 16.4 supports Turbopack and Webpack, supported intrinsic media JSX,
+  verified static `next/image` references, and the `assetUrl()` helper. Ordinary
+  managed Image references get a direct URL and `unoptimized` at build time.
+  Explicit conflicting settings, custom loaders and ambiguous spreads are
+  preserved with diagnostics.
+- Dynamic paths require the helper. Database/API URLs and unknown paths are not
+  inferred as assets. Next CSS, `next/font`, metadata conventions and raw public
+  file contents are not automatically rewritten.
+- Public access setup, CDN cache purging, multipart uploads, remote deletion,
+  hosted CI state persistence and CRA integration are outside v0.
+- Real Next tests cover SSG, SSR, client-component initial output and ISR after
+  local state removal. Browser hydration, standalone, Edge and serverless
+  deployments have not been validated. There is no large-project benchmark yet.
+
+## Repository and checks
+
+Packages: `simpcn`, `@simpcn/core`, `@simpcn/storage-s3`, `@simpcn/transforms`,
+`@simpcn/vite`, and `@simpcn/next`. `apps/web` is the Next.js launch website.
+`examples/minio.mjs` is the direct-library example with its own baseline file.
+
+```sh
 pnpm test
 pnpm typecheck
+pnpm pack:local
 ```
 
-## Local MinIO migration
-
-The main entry point is now the CLI, configured by `simpcn.config.ts`:
-
-```sh
-pnpm build
-pnpm simpcn plan
-pnpm simpcn plan --check-remote
-pnpm simpcn migrate
-```
-
-The root script loads `.env.local`. Configurable asset roots, exclusions, upload
-settings, structured JSON output and initialization are documented in
-[`packages/cli/README.md`](packages/cli/README.md). To deliberately replace differing
-remote objects, use `pnpm simpcn migrate --overwrite`.
-
-The new local baseline is `.simpcn/manifest.json`; deployment history remains in
-`.simpcn/minio-state.json`. The baseline contains a versioned envelope scoped to the
-asset root and destination. CLI progress uses stderr; `--json` disables progress.
-
-### Library example
-
-The original `examples/minio.mjs` remains available as a library usage example. It
-uses its own legacy local baseline alongside the same deployment history:
-
-Copy `.env.example` to `.env.local` and set credentials there or in your shell.
-The local file is ignored by Git. Defaults target the MinIO S3 API at
-`http://192.168.1.14:9000`, existing bucket `simpcn-test`, region `us-east-1`, and
-prefix `mvp`. The bucket must already exist.
-
-```sh
-pnpm minio:plan
-pnpm minio:migrate
-```
-
-The plan command is local-only: no storage requests, state writes, or uploads.
-Migration checks each remote object, uploads missing assets, and verifies metadata.
-It skips matching objects even if the local plan proposes an upload. It restores
-missing objects even if the local plan proposes a skip.
-
-Existing objects with different or missing SHA-256 metadata are conflicts by
-default. To deliberately replace them in the configured test prefix:
-
-```sh
-pnpm minio:migrate --overwrite
-```
-
-Creates/replacements use conditional PUTs to avoid racing another writer.
-Replacements report `replaced: true`; CDN purging is not performed. Removed local
-assets are reported and their remote objects remain intact.
-
-## Local state and recovery
-
-- `.simpcn/minio-state.json`: successful upload and metadata-verification history,
-  scoped to service endpoint, bucket and prefix.
-- `.simpcn/minio-state.json.manifest.json`: complete last successful local inventory.
-  This is the library example's baseline; the CLI uses `.simpcn/manifest.json`.
-- Both are gitignored. State is atomically replaced after each successful upload
-  and verification, so partial successes survive a failed run.
-- State locks prevent concurrent local writes. After a process crash, remove a
-  stale lock only after confirming that its migration process is no longer running.
-- Rerun the same command after a failure. Every asset is reconciled remotely;
-  state history is not proof that the object still exists.
-
-The executor defaults to four concurrent assets and three total attempts per
-network operation, retrying transient errors with capped exponential delay.
-Independent assets finish when another asset fails. The command exits nonzero on
-failure or cancellation. Report `attempts` counts all network calls for that asset,
-not just uploads (normally HEAD + PUT + HEAD = 3).
-
-Verification checks HEAD metadata: size, MIME, cache policy and our SHA-256 field.
-It does not download and cryptographically validate the stored bytes. The opt-in
-integration test additionally downloads objects to validate their actual hashes.
+The default tests use local fixtures and production test servers, with no external
+storage access. The opt-in MinIO tests write to dedicated test prefixes and leave
+remote objects for inspection:
 
 ```sh
 SIMPCN_MINIO_TEST=1 pnpm test:minio
+SIMPCN_MINIO_TEST=1 pnpm test:cli:minio
 ```
-
-This test writes three objects under `<S3_PREFIX>/integration`, deliberately
-replaces its `changed.txt` object, and leaves remote objects available for inspection.
-Regular `pnpm test` requires no credentials and does not access the network.
-
-The MVP uses streaming single-part uploads, supporting files up to 5 GiB. Multipart
-uploads, CI state persistence, deletion policies, framework adapters, public CDN
-URLs and cache invalidation are not implemented yet. Run against a stable asset
-directory; filesystem reads are not an atomic snapshot.

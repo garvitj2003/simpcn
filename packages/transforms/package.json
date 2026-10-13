@@ -1,0 +1,31 @@
+{
+  "name": "@simpcn/transforms",
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@babel/parser": "^8.0.7",
+    "@babel/traverse": "^8.0.7",
+    "@babel/types": "^8.0.6",
+    "@simpcn/core": "workspace:*",
+    "magic-string": "^1.4.3",
+    "parse5": "^8.0.1",
+    "postcss": "^8.5.29",
+    "postcss-value-parser": "^4.2.0"
+  }
+}

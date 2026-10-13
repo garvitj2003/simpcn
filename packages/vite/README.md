@@ -1,7 +1,7 @@
 # @simpcn/vite
 
 Build-time public asset URL integration for Vite 8. Requires Node.js 24.11+.
-Package names are provisional; these packages have not been published yet.
+These packages have not been published yet; use local archives for v0 testing.
 
 ```ts
 // vite.config.ts
@@ -21,16 +21,16 @@ assets keep Vite's normal delivery behavior.
 
 ## Testing locally from an npm project
 
-Run `pnpm pack:local` from the simpcn repository. This builds all four packages
+Run `pnpm pack:local` from the simpcn repository. This builds all packages
 and writes npm-compatible tarballs to `artifacts/`, replacing workspace dependency
 ranges with package versions. Direct `npm link` of these workspace packages can
 fail with `EUNSUPPORTEDPROTOCOL`.
 
-From your React application's directory, install all four archives together
+From your React application's directory, install all required archives together
 (replace `/path/to/simpcn` with your checkout):
 
 ```sh
-npm install -D /path/to/simpcn/artifacts/simpcn-core-0.1.0.tgz /path/to/simpcn/artifacts/simpcn-storage-s3-0.1.0.tgz /path/to/simpcn/artifacts/simpcn-0.1.0.tgz /path/to/simpcn/artifacts/simpcn-vite-0.1.0.tgz
+npm install -D /path/to/simpcn/artifacts/simpcn-core-0.1.0.tgz /path/to/simpcn/artifacts/simpcn-storage-s3-0.1.0.tgz /path/to/simpcn/artifacts/simpcn-0.1.0.tgz /path/to/simpcn/artifacts/simpcn-transforms-0.1.0.tgz /path/to/simpcn/artifacts/simpcn-vite-0.1.0.tgz
 npx simpcn --help
 ```
 
@@ -125,4 +125,4 @@ raw objects retain their contents, so references inside them are not rewritten b
 the plugin. Relative references inside such files need to remain valid under the
 public namespace. CDN font delivery also needs suitable CORS response headers.
 
-Next.js integration is a separate upcoming package.
+Next.js integration is available through `@simpcn/next`; see its README for scope.

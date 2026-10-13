@@ -31,10 +31,10 @@ export async function initializeProject(input: Flags, cwd: string, options: Init
   if (interactive && !options.ask && !options.select) process.stderr.write(`\n${pc.bold(pc.cyan('simpcn'))} ${pc.dim('— project setup')}\n\n`);
   flags.framework ??= interactive ? await select('Select your framework', [
     { name: 'Vite (React, Vue, Svelte)', value: 'vite' },
+    { name: 'Next.js (Turbopack / webpack)', value: 'next' },
     { name: 'Core only — asset migration without a framework plugin', value: 'core' },
-  ], detected === 'next' ? 'core' : detected) : detected;
-  if (flags.framework === 'next') throw new Error('Next.js integration is not implemented yet. Use --framework core for migration only.');
-  if (!['vite', 'core'].includes(flags.framework)) throw new Error('Choose framework vite or core');
+  ], detected) : detected;
+  if (!['vite', 'next', 'core'].includes(flags.framework)) throw new Error('Choose framework vite, next or core');
   if (interactive) {
     flags.provider ??= await select('Select your storage provider', [
       { name: 'AWS S3', value: 's3' },
@@ -61,22 +61,27 @@ export async function initializeProject(input: Flags, cwd: string, options: Init
   const ignore = await exists(ignorePath) ? await readFile(ignorePath, 'utf8') : '';
   const missing = ['.env', '.env.local', '.simpcn/'].filter(line => !ignore.split(/\r?\n/).includes(line));
   if (missing.length) await writeFile(ignorePath, ignore + (ignore.endsWith('\n') || !ignore ? '' : '\n') + missing.join('\n') + '\n');
-  if (flags.framework === 'vite') {
+  if (flags.framework === 'vite' || flags.framework === 'next') {
+    const packageName = flags.framework === 'next' ? '@simpcn/next' : '@simpcn/vite';
     const manager = pkg.packageManager?.split('@')[0] ?? (await exists(path.join(cwd, 'pnpm-lock.yaml')) ? 'pnpm' : await exists(path.join(cwd, 'yarn.lock')) ? 'yarn' : await exists(path.join(cwd, 'bun.lock')) ? 'bun' : 'npm');
     if (!['npm', 'pnpm', 'yarn', 'bun'].includes(manager)) throw new Error(`Unsupported package manager: ${manager}`);
-    if (!dependencies['@simpcn/vite'] && !flags['skip-install']) {
-      const integration = flags['integration-package'] ? path.resolve(cwd, flags['integration-package']) : '@simpcn/vite@0.1.0';
+    if ((!dependencies[packageName]) && !flags['skip-install']) {
+      const integration = flags['integration-package'] ? path.resolve(cwd, flags['integration-package']) : `${packageName}@0.1.0`;
       if (flags['integration-package'] && (!integration.endsWith('.tgz') || !await exists(integration))) throw new Error('integration-package must point to an existing .tgz archive');
-      const args = manager === 'npm' ? ['install', '-D', integration] : ['add', '-D', integration];
+      const packages = [integration];
+      const args = manager === 'npm' ? ['install', '-D', ...packages] : ['add', '-D', ...packages];
       const install = options.install ?? ((manager: string, args: string[], cwd: string) => new Promise<void>((resolve, reject) => {
         const child = spawn(manager, args, { cwd, stdio: ['ignore', 'pipe', 'pipe'], shell: false });
         child.stdout?.pipe(process.stderr); child.stderr?.pipe(process.stderr);
         child.on('error', reject); child.on('exit', code => code === 0 ? resolve() : reject(new Error(`${manager} installation failed (${code})`)));
       }));
       try { await install(manager, args, cwd); }
-      catch (error) { throw new Error(`Config created at ${config}, but integration installation failed. Install @simpcn/vite manually and add simpcn() to your Vite config; the generated storage config has been kept. ${String(error)}`); }
-    } else if (!dependencies['@simpcn/vite']) warnings.push('Install @simpcn/vite before running Vite.');
-    warnings.push('Add import { simpcn } from "@simpcn/vite" to your Vite config, then put simpcn() first in its plugins array.');
+      catch (error) { throw new Error(`Config created at ${config}, but integration installation failed. Install ${packageName} manually and configure your framework integration; the generated storage config has been kept. ${String(error)}`); }
+    } else if (!dependencies[packageName]) warnings.push(`Install ${packageName} before building.`);
+    if (flags.framework === 'next') {
+      warnings.push('In next.config.ts or next.config.mjs, add import { withSimpcn } from "@simpcn/next"; then wrap your existing config: export default withSimpcn(nextConfig);');
+      warnings.push('Next.js adapter prototype: regular JSX media references, verified static next/image and assetUrl() are supported; CSS rewriting is not implemented.');
+    } else warnings.push('Add import { simpcn } from "@simpcn/vite" to your Vite config, then put simpcn() first in its plugins array.');
   }
   return { config, framework: flags.framework, warnings };
 }

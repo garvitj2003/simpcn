@@ -46,10 +46,44 @@ it('preserves existing templates and refuses repeated init', async () => {
   await expect(initializeProject({ yes: true }, cwd)).rejects.toThrow('already exists');
   expect(await readFile(path.join(cwd, '.env.example'), 'utf8')).toBe('KEEP=this\n');
 });
-it('does not present unimplemented Next.js as a working integration', async () => {
-  await pkg({ dependencies: { next: '^16' } });
-  await expect(initializeProject({ yes: true }, cwd)).rejects.toThrow('not implemented');
-  expect((await initializeProject({ framework: 'core' }, cwd)).framework).toBe('core');
+it('detects an installed Next adapter and preserves existing Next config', async () => {
+  await pkg({ dependencies: { next: '^16.4.0' }, devDependencies: { '@simpcn/next': '0.1.0' } });
+  const source = 'export default {basePath:"/docs"};\n';
+  await writeFile(path.join(cwd, 'next.config.ts'), source);
+  const install = vi.fn(async () => {});
+  const result = await initializeProject({ yes: true }, cwd, { install });
+  expect(result.framework).toBe('next');
+  expect(install).not.toHaveBeenCalled();
+  expect(result.warnings.join(' ')).toContain('withSimpcn(nextConfig)');
+  expect(result.warnings.join(' ')).toContain('not implemented');
+  expect(await readFile(path.join(cwd, 'next.config.ts'), 'utf8')).toBe(source);
+});
+it('installs the Next adapter with the project package manager', async () => {
+  await pkg({ dependencies: { next: '^16.4.0' }, packageManager: 'npm@11' });
+  const install = vi.fn(async () => {});
+  const result = await initializeProject({ framework: 'next', yes: true }, cwd, { install });
+  expect(result.framework).toBe('next');
+  expect(install).toHaveBeenCalledWith('npm', ['install', '-D', '@simpcn/next@0.1.0'], cwd);
+});
+it('offers Next in the menu and preselects it for a Next project', async () => {
+  await pkg({ dependencies: { next: '^16.4.0' }, devDependencies: { '@simpcn/next': '0.1.0' } });
+  const select = vi.fn(async (_message, _choices, fallback) => fallback);
+  const result = await initializeProject({}, cwd, { interactive: true, select, ask: async (_message, fallback) => fallback });
+  expect(result.framework).toBe('next');
+  expect(select.mock.calls[0][1]).toContainEqual({ name: 'Next.js (Turbopack / webpack)', value: 'next' });
+  expect(select.mock.calls[0][2]).toBe('next');
+});
+it('uses a local Next archive for unpublished setup through the CLI', async () => {
+  await pkg({ dependencies: { next: '^16.4.0' } });
+  const archive = path.join(cwd, 'simpcn-next-0.1.0.tgz');
+  await writeFile(archive, 'archive fixture');
+  const install = vi.fn(async () => {});
+  let output = '';
+  expect(await runCli(['init', '--framework', 'next', '--integration-package', archive, '--json'], {
+    cwd, stdout: text => { output += text; }, stderr: () => {}, setup: { install },
+  })).toBe(0);
+  expect(JSON.parse(output).framework).toBe('next');
+  expect(install).toHaveBeenCalledWith('npm', ['install', '-D', archive], cwd);
 });
 it('loads env precedence without exposing values or replacing shell variables', async () => {
   await writeFile(path.join(cwd, '.env'), 'KEY=base\nONLY_BASE="a b"\nSHELL=base\n');

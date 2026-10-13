@@ -1,0 +1,50 @@
+{
+  "name": "@simpcn/next",
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./assets": {
+      "import": {
+        "types": "./dist/assets.d.ts",
+        "default": "./dist/assets.js"
+      },
+      "require": {
+        "types": "./dist/assets.d.cts",
+        "default": "./dist/assets.cjs"
+      }
+    }
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@simpcn/core": "workspace:*",
+    "@simpcn/transforms": "workspace:*"
+  },
+  "peerDependencies": {
+    "next": "^16.4.0"
+  },
+  "devDependencies": {
+    "@babel/parser": "^8.0.7",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  }
+}

@@ -14,10 +14,13 @@ npx simpcn init
 
 Interactive init uses arrow-key menus (Enter to select) for the framework and
 storage provider, with colored headings and completion messages. It asks for
-region, bucket and prefix, then creates `simpcn.config.ts`. Next.js integration is
-not implemented. Vite selection installs `@simpcn/vite` with the project's package
-manager if it is not already declared. Init never edits `vite.config.*`; it prints
-instructions to import `simpcn` and place `simpcn()` first in the plugins array.
+region, bucket and prefix, then creates `simpcn.config.ts`. Vite selection installs
+`@simpcn/vite`; Next.js selection installs `@simpcn/next` with the project's package
+manager if it is not already declared. Next.js projects are detected through the
+`next` dependency and preselected in the menu. Init never edits framework config
+files: it prints Vite plugin or Next.js `withSimpcn()` wrapper instructions.
+The Next adapter supports automatic verified static `next/image` references.
+CSS rewriting is not implemented.
 
 The bucket defaults to a normalized package.json project name (directory name as
 fallback). The prefix defaults to `assets`. Both are editable. The bucket must
@@ -29,7 +32,9 @@ npx simpcn init --yes --framework vite --provider minio --endpoint http://192.16
 ```
 
 Use `--skip-install` to install the integration yourself. For local unpublished
-testing, use `--integration-package /absolute/path/simpcn-vite-0.1.0.tgz`.
+testing, use `--integration-package /absolute/path/simpcn-vite-0.1.0.tgz`, or
+`simpcn-next-0.1.0.tgz` with `--framework next`. Install unpublished core and
+transforms archives in the consuming project as well.
 `--json` and noninteractive terminals suppress prompts; flags override defaults.
 If dependency installation fails, generated settings are retained and the CLI
 reports the failure. Install the integration manually; there is no need to erase
