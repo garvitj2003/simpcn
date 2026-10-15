@@ -1,0 +1,51 @@
+.rm-scene { margin-block: 30px; }
+.rm-content { min-width: 0; padding: 22px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: inset 0 1px 0 var(--surface-highlight); }
+.rm-source-window { max-width: 420px; margin-inline: auto; overflow: hidden; border: 1px solid var(--border); border-radius: 13px; background: var(--surface); box-shadow: 0 5px 18px var(--shadow), inset 0 1px 0 var(--surface-highlight); }
+.rm-window-bar { display: flex; align-items: center; gap: 12px; min-height: 38px; padding: 8px 12px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+.rm-lights { display: flex; gap: 5px; }
+.rm-lights i { width: 7px; height: 7px; border-radius: 50%; background: #f08a80; box-shadow: inset 0 0 0 1px #0000000d; }
+.rm-lights i:nth-child(2) { background: #e6c477; }.rm-lights i:nth-child(3) { background: #8bc4a2; }
+.rm-unchanged { margin-left: auto; color: var(--success); font-size: 10px; }
+.rm-source-window > code { display: block; padding: 17px 15px; font-size: clamp(10px, 2vw, 12px); color: var(--code-ink); overflow-wrap: anywhere; white-space: normal; }
+.rm-routing { display: block; width: 100%; max-width: 600px; height: auto; margin: 9px auto 0; overflow: visible; color: var(--accent); }
+.rm-routing text { fill: var(--muted); font-size: 12px; font-family: inherit; }
+.rm-route { stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 2 6; stroke-linecap: round; }
+.rm-node { fill: var(--surface-strong); stroke: var(--border); stroke-width: 1.5; }
+.rm-cloud { fill: var(--code-bg); stroke: var(--accent); stroke-width: 1.5; }
+.rm-destination { transition: opacity 200ms var(--ease-out); }
+.rm-local-node { opacity: 1; }.rm-cdn-node { opacity: 0; }
+[data-production="true"] .rm-local-node { opacity: 0; }[data-production="true"] .rm-cdn-node { opacity: 1; }
+.rm-file-track { transform: translate(447px, 70px); }
+.rm-file { transform-box: fill-box; transform-origin: center; }
+.rm-resolved { display: grid; gap: 7px; padding: 14px 16px; border-radius: 10px; background: var(--code-bg); }
+.rm-resolved > span { color: var(--muted); font-size: 11px; }
+.rm-resolved code { color: var(--code-ink); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.motion-scene:is([data-motion="running"], [data-motion="paused"]) .rm-file-track { animation: rm-deliver 4.8s linear both; }
+.motion-scene:is([data-motion="running"], [data-motion="paused"]) .rm-file { animation: rm-settle 4.8s var(--ease-out) both; }
+/* Simple straight transfer is the fallback for browsers without motion paths. */
+@keyframes rm-deliver {
+  0%, 12% { transform: translate(73px, 70px); opacity: 0; }
+  18% { transform: translate(73px, 70px); opacity: 1; animation-timing-function: var(--ease-transfer); }
+  49%, 100% { transform: translate(447px, 70px); opacity: 1; }
+}
+@keyframes rm-settle {
+  0%, 12% { transform: rotate(-3deg) scale(1); }
+  18% { transform: rotate(-5deg) scale(.98, 1.02); }
+  29% { transform: rotate(3deg) scale(1.02, .99); }
+  43% { transform: rotate(2deg) scale(1); }
+  49% { transform: rotate(-1deg) scale(1.02, .98); }
+  55%, 100% { transform: rotate(0) scale(1); }
+}
+/* One continuously evaluated Bezier, without intermediate waypoints or stops. */
+@supports (offset-path: path("M0 0L1 1")) {
+  .rm-file-track { transform: none; transform-box: fill-box; offset-anchor: 50% 50%; offset-rotate: 0deg; offset-distance: 100%; }
+  .motion-scene:is([data-motion="running"], [data-motion="paused"]) .rm-file-track { animation-name: rm-path-deliver; }
+}
+@keyframes rm-path-deliver {
+  0%, 12% { offset-distance: 0%; opacity: 0; }
+  18% { offset-distance: 0%; opacity: 1; animation-timing-function: var(--ease-transfer); }
+  49%, 100% { offset-distance: 100%; opacity: 1; }
+}
+@media (max-width: 640px) { .rm-content { padding: 14px; }.rm-routing text { font-size: 13px; }.rm-resolved { padding: 12px; }.rm-resolved code { font-size: 11px; } }
+@media (prefers-reduced-motion: reduce) { .rm-destination { transition-duration: 100ms; }.rm-file-track, .rm-file { animation: none !important; } }
+@media (forced-colors: active) { .rm-content, .rm-source-window, .rm-resolved { border: 1px solid CanvasText; background: Canvas; box-shadow: none; }.rm-node, .rm-cloud { fill: Canvas; stroke: CanvasText; }.rm-route { stroke: CanvasText; } }

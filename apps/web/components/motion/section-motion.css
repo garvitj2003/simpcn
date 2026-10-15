@@ -1,0 +1,42 @@
+.section-motion-root { display: contents; }
+
+/* Only the surface catches light. Text, actions and geometry stay still. */
+.home-community { position: relative; isolation: isolate; }
+.home-community::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: 5%;
+  width: 24%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--foreground), transparent);
+  opacity: 0;
+}
+.home-community[data-reflection="play"]::after { animation: community-glass-reflection 900ms var(--ease-out) both; }
+.home-community[data-reflection-paused="true"]::after { animation-play-state: paused; }
+@keyframes community-glass-reflection {
+  0% { opacity: 0; transform: translateX(0); }
+  20% { opacity: .08; }
+  75% { opacity: .08; }
+  100% { opacity: 0; transform: translateX(270%); }
+}
+
+/* Native details remain immediate and keyboard accessible; only their content fades. */
+.section-motion-root .home-faq-plus { transition: transform 200ms var(--ease-out); }
+.section-motion-root :is(.home-faq-answer, .asset-reference-context-content, .compatibility-disclosure > :not(summary)) {
+  transition: opacity 180ms var(--ease-out);
+}
+@starting-style {
+  .section-motion-root details[open] > :is(.home-faq-answer, .asset-reference-context-content),
+  .section-motion-root .compatibility-disclosure[open] > :not(summary) { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-community::after { animation: none !important; }
+  .section-motion-root .home-faq-plus { transition: none; }
+  .section-motion-root :is(.home-faq-answer, .asset-reference-context-content, .compatibility-disclosure > :not(summary)) { transition-duration: 120ms; }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+  .home-community::after { display: none; }
+}

@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Simpcn website
 
-## Getting Started
+Official marketing site and documentation, using the existing Next.js 16.4,
+React, TypeScript, and Tailwind setup. No additional UI, animation, or
+markdown-rendering dependency is required.
 
-First, run the development server:
+## Local development
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```sh
+pnpm --dir apps/web dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Use the existing dev server and hot reload while iterating. The homepage contains
+the approved navbar, hero, migration illustration, problem/solution comparison,
+explicit development/production example, workflow, installation, FAQ, community,
+and footer. `/docs` contains eight documentation pages.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Theme
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The header toggle switches light/dark mode. Light is the default until
+a manual selection is saved. The initialization script applies the choice before
+the page paints; blocked local storage keeps the selection in the current tab.
+All new sections use shared semantic tokens in `styles/theme.css`. Preserve the
+existing Caveat display type, Geist body, pill controls, translucent materials,
+and soft blue hero gradient.
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+`app/` contains route entry points, layouts, and metadata. Global foundations and
+theme tokens live in `styles/`; environment configuration lives in `lib/`.
+Reusable interface code lives in `components/`, grouped by purpose: `hero/`,
+`home/`, `navigation/`, `motion/`, and `shared/`. Keep styles alongside the
+component they describe.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Documentation is isolated in `features/docs/`: the page renderer, package-manager
+selection, shared types, and documentation stylesheet. Its `content/` directory
+has one module per guide plus shared examples, so a guide can be edited without
+working through a single large JSX file. The files in `app/docs/` only compose
+those pieces into routes. Interactive selectors remain client components;
+documentation content and route rendering remain server components.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## UI stress fixtures
 
-## Deploy on Vercel
+While the development server is running, open `/dev/ui-stress`. The development-only
+page renders real shared components with Demo data, Worst case, and Empty fixtures.
+It includes realistic long asset paths and configuration labels, 320px/280px
+containers, and the existing theme toggle. Dataset selection stays in the URL.
+The route returns 404 in production. Browser and real-device review is still needed.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Public origin
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Set `NEXT_PUBLIC_SITE_URL` to the real canonical HTTPS origin before launch.
+The metadata and sitemap use that origin; no placeholder deployment domain is
+hardcoded. Without it, the sitemap remains empty. See `.env.example`.
+
+## Content boundaries
+
+The npm package is `simpcn`, currently 0.1.0. Setup examples use the published
+package and its Next.js/Vite adapters. The animation and CDN domain are
+illustrative. No live upload happens in the website. Provider support and
+reference limitations are documented explicitly.
+
+Further automated verification was stopped at the user's request. Browser tools
+were not used, and the website has not been deployed.

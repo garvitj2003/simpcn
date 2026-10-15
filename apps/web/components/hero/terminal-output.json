@@ -1,0 +1,4 @@
+{
+  "plan": "Local  1 added\nProposed transfer 385 B\n\n  upload     window.svg\nRemote unchecked · run simpcn plan --check-remote\nDry run · no changes made.\n",
+  "migrate": "  uploaded   assets/window.svg\n\n✓ Migration complete\n1 uploaded · 385 B uploaded\n"
+}

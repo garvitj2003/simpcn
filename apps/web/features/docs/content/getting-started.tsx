@@ -1,0 +1,19 @@
+import type { Doc } from '../types';
+import Link from 'next/link';
+import { Code, storageConfig, nextConfig, viteConfig } from './shared';
+import { InstallCommand, PackageCommand } from '../install-command';
+
+export const gettingStarted: Doc = {
+  slug: '', title: 'Getting started',
+  headline: 'We’ll handle it from here.',
+  description: 'Add Simpcn as a dev dependency. The CLI will guide you through setup.',
+  sections: [
+    { id: 'before-you-start', title: 'Before you start', body: <p>Use Node.js <strong>24.11+</strong> and an existing Next.js or Vite project. Have a storage bucket, upload credentials, and a public delivery URL ready. <Link href="/docs/storage">Storage setup →</Link></p> },
+    { id: 'install', title: '1. Install Simpcn', body: <><p>Run this in the application directory:</p><InstallCommand /></> },
+    { id: 'initialize', title: '2. Let the CLI guide you', body: <><PackageCommand action="init" /><p>Choose a framework and storage provider. The CLI creates the configuration, can install the framework adapter, and prints the next steps.</p><p>Set the existing bucket and public delivery URL in <code>simpcn.config.ts</code>. Include the storage prefix once in that URL.</p><details className="docs-setup-disclosure"><summary>Example storage configuration</summary><Code label="simpcn.config.ts · replace the example values" code={storageConfig} /></details></> },
+    { id: 'credentials', title: '3. Add upload credentials', body: <><Code label=".env.local · beside simpcn.config.ts" code={'AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY\nAWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY'} /><p>Keep credentials out of source control and browser-exposed variables. <Link href="/docs/storage#credentials">More credential options →</Link></p></> },
+    { id: 'connect', title: '4. Connect the framework', body: <><p>Add the adapter to the existing framework configuration:</p><details className="docs-setup-disclosure"><summary>Next.js · next.config.ts</summary><Code label="next.config.ts" code={nextConfig} /><p><Link href="/docs/nextjs">Next.js integration guide →</Link></p></details><details className="docs-setup-disclosure"><summary>Vite · vite.config.ts</summary><Code label="vite.config.ts" code={viteConfig} /><p><Link href="/docs/vite">Vite integration guide →</Link></p></details></> },
+    { id: 'migrate', title: '5. Preview, migrate, build', body: <><PackageCommand action="workflow" /><p>Preview the assets, upload and verify them, then run the application’s production build. The build rewrites supported references; it does not upload files.</p><p><Link href="/docs/cli">All CLI commands →</Link></p></> },
+    { id: 'check-result', title: '6. Keep writing the same code', body: <><Code label="Source · unchanged" code={'<img src="/images/hero.webp" alt="Product preview" />'} /><p>Development keeps the local path. After migration and a production build, supported references resolve to the configured delivery URL. Source files and original assets stay in place.</p><p><Link href="/docs/supported-references">Supported references</Link> · <Link href="/docs/troubleshooting">Troubleshooting</Link></p></> },
+  ],
+};

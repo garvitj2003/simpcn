@@ -1,6 +1,8 @@
-# @simpcn/next — adapter prototype
+# @simpcn/next — v0 adapter
 
-The prototype proves direct public-asset delivery in production Next.js 16.4 with
+Version 0.1.0 is published on npm: `npm install -D simpcn @simpcn/next`.
+
+The adapter supports direct public-asset delivery in production Next.js 16.4 with
 Turbopack and Webpack. It supports static DOM media JSX/TSX attributes, verified
 static next/image references and a compiled dynamic URL helper. The PostCSS plugin
 is not implemented. Init supports Next.js detection, installation and manual

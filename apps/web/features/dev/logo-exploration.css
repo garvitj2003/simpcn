@@ -1,0 +1,24 @@
+.logo-exploration { max-width: 1120px; margin-inline: auto; padding: 56px max(24px, env(safe-area-inset-right)) calc(64px + env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); }
+.logo-exploration-heading { max-width: 620px; margin-bottom: 64px; }
+.logo-exploration-heading > a { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: 24px; color: var(--foreground); font-size: 14px; }
+.logo-exploration-heading h1 { margin: 0; font-size: clamp(30px, 5vw, 48px); font-weight: 550; letter-spacing: -.04em; line-height: 1.1; }
+.logo-exploration-heading p { color: var(--muted); font-size: 16px; line-height: 1.65; }
+.logo-directions { display: grid; gap: 64px; }
+.logo-direction-heading { margin-bottom: 20px; }
+.logo-direction-heading h2 { margin: 0 0 8px; font-size: 24px; font-weight: 550; letter-spacing: -.025em; }
+.logo-direction-heading p { max-width: 62ch; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
+.logo-direction-samples { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.logo-sample { min-width: 0; display: grid; justify-items: center; gap: 30px; padding: 40px 24px 28px; border-radius: 16px; }
+.logo-sample-light { background: #eef1f3; color: #293239; }
+.logo-sample-dark { background: #202020; color: #f2eee7; }
+.logo-large-mark { padding: 10px 0; }
+.logo-wordmark { display: inline-flex; align-items: center; gap: 10px; font-size: 25px; font-weight: 650; letter-spacing: -1px; line-height: 1; }
+.logo-small-marks { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 18px; }
+.logo-small-marks span { font-size: 11px; opacity: .65; }
+.logo-sample svg { display: block; flex-shrink: 0; }
+@media (max-width: 600px) {
+  .logo-exploration { padding-top: 24px; }
+  .logo-exploration-heading { margin-bottom: 40px; }
+  .logo-direction-samples { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .logo-sample { padding: 28px 20px; gap: 24px; }
+}

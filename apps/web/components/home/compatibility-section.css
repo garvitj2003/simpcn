@@ -1,0 +1,78 @@
+.compatibility-section {
+  max-width: 1240px;
+  padding: 112px 40px 80px;
+  margin-inline: auto;
+  scroll-margin-top: 40px;
+}
+.compatibility-layout { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); grid-template-areas: "guidance editor" "storage editor"; gap: 36px clamp(40px, 7vw, 96px); align-items: start; }
+.compatibility-guidance { grid-area: guidance; }
+.compatibility-editor { grid-area: editor; }
+.compatibility-guidance, .compatibility-editor { min-width: 0; }
+.compatibility-heading h2 { margin: 0; font-family: var(--font-headline), cursive; font-size: clamp(40px, 4.6vw, 60px); font-weight: 600; letter-spacing: -.035em; line-height: 1.08; }
+.compatibility-heading > p { max-width: 35ch; margin: 24px 0 32px; color: var(--foreground); font-size: 18px; line-height: 1.65; }
+.compatibility-frameworks { display: flex; flex-wrap: wrap; gap: 8px; }
+.compatibility-frameworks button { min-height: 48px; padding: 10px 22px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-size: 20px; font-weight: 550; letter-spacing: -.025em; cursor: pointer; touch-action: manipulation; }
+.compatibility-frameworks button[aria-pressed="true"] { background: var(--foreground); color: var(--background); }
+.compatibility-version { margin: 18px 0 12px; color: var(--foreground); font-size: 14px; }
+.compatibility-note { max-width: 39ch; margin: 0 0 8px; color: var(--muted); font-size: 15px; line-height: 1.65; }
+.compatibility-text-link { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; color: var(--foreground); font-size: 15px; text-underline-offset: 5px; text-decoration-color: var(--muted); }
+.compatibility-storage { grid-area: storage; min-width: 0; max-width: 38ch; }
+.compatibility-storage h3, .compatibility-finish h3 { margin: 0; color: var(--foreground); font-size: 21px; line-height: 1.35; letter-spacing: -.025em; font-weight: 550; }
+.compatibility-storage p, .compatibility-finish p { margin: 12px 0 8px; color: var(--muted); font-size: 16px; line-height: 1.65; }
+.compatibility-editor-intro { margin: 0 0 20px; max-width: 44ch; color: var(--foreground); font-size: 16px; line-height: 1.65; }
+.compatibility-editor .site-code-block { border: 0; border-radius: 12px; background: var(--code-bg); box-shadow: none; }
+.compatibility-editor .site-code-block + .site-code-block { margin-top: 16px; }
+.compatibility-editor .site-code-bar { padding: 10px 12px 6px 24px; font-size: 13px; }
+.compatibility-editor .site-code-block pre { padding: 12px 24px 28px; font-size: 13px; line-height: 1.9; }
+.compatibility-editor-note { margin: 18px 0 0; max-width: 52ch; font-size: 14px; color: var(--muted); line-height: 1.65; }
+.compatibility-finish { display: flex; justify-content: space-between; align-items: center; gap: 28px; margin-top: 64px; padding: 30px 32px; border-radius: 16px; background: var(--surface); }
+.compatibility-finish p { max-width: 53ch; margin-bottom: 0; }
+.compatibility-finish > a { flex-shrink: 0; }
+.compatibility-finish > .compatibility-mobile-cta { display: none; }
+.compatibility-requirements { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; margin-top: 22px; color: var(--muted); font-size: 13px; }
+.compatibility-requirements a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: inherit; text-underline-offset: 4px; }
+.compatibility-section :is(a, button):focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+@media (hover: hover) and (pointer: fine) {
+  .compatibility-frameworks button:not([aria-pressed="true"]):hover { background: var(--surface); color: var(--foreground); }
+  .compatibility-text-link:hover, .compatibility-requirements a:hover { text-decoration-color: currentColor; }
+}
+@media (max-width: 900px) {
+  .compatibility-section { padding: 80px 28px 64px; }
+  .compatibility-layout { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 32px; }
+  .compatibility-heading > p { font-size: 16px; }
+  .compatibility-finish { padding: 24px; }
+}
+@media (max-width: 700px) {
+  .compatibility-section { padding: 64px max(20px, env(safe-area-inset-right)) 64px max(20px, env(safe-area-inset-left)); }
+  .compatibility-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "guidance"; gap: 0; }
+  .compatibility-heading h2 { font-size: clamp(36px, 9vw, 46px); }
+  .compatibility-heading > p { max-width: 32ch; margin: 16px 0 20px; line-height: 1.6; }
+  .compatibility-frameworks { gap: 4px; }
+  .compatibility-frameworks button { min-height: 44px; padding: 8px 18px; font-size: 16px; }
+  .compatibility-version { margin: 12px 0 4px; font-size: 13px; }
+  .compatibility-note, .compatibility-editor-intro, .compatibility-editor-note { display: none; }
+  .compatibility-storage { max-width: 42ch; }
+  .compatibility-storage h3, .compatibility-finish h3 { font-size: 18px; }
+  .compatibility-storage p { font-size: 15px; margin-top: 8px; }
+  .compatibility-finish { align-items: flex-start; flex-direction: column; margin-top: 28px; padding: 0; background: transparent; gap: 16px; }
+  .compatibility-finish p { font-size: 15px; margin-top: 8px; }
+  .compatibility-finish > a { width: 100%; }
+  .compatibility-requirements { gap: 4px 16px; font-size: 12px; }
+  .compatibility-heading > p,
+  .compatibility-version,
+  .compatibility-guidance > .compatibility-text-link,
+  .compatibility-editor,
+  .compatibility-storage,
+  .compatibility-finish > div,
+  .compatibility-finish > .compatibility-desktop-cta,
+  .compatibility-requirements { display: none; }
+  .compatibility-frameworks { margin-top: 24px; }
+  .compatibility-finish { margin-top: 20px; }
+  .compatibility-finish > .compatibility-mobile-cta { display: inline-flex; }
+  .compatibility-editor .site-code-block pre { padding-inline: 16px; font-size: 12px; }
+  .compatibility-editor .site-code-bar { padding-left: 16px; }
+}
+@media (forced-colors: active) {
+  .compatibility-frameworks button[aria-pressed="true"] { background: Highlight; color: HighlightText; }
+  .compatibility-editor .site-code-block { border: 1px solid CanvasText; background: Canvas; }
+}

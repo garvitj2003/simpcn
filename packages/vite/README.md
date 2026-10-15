@@ -1,7 +1,7 @@
 # @simpcn/vite
 
 Build-time public asset URL integration for Vite 8. Requires Node.js 24.11+.
-These packages have not been published yet; use local archives for v0 testing.
+Version 0.1.0 is published on npm. Install with `npm install -D simpcn @simpcn/vite`.
 
 ```ts
 // vite.config.ts
@@ -34,7 +34,7 @@ npm install -D /path/to/simpcn/artifacts/simpcn-core-0.1.0.tgz /path/to/simpcn/a
 npx simpcn --help
 ```
 
-Installing the archives together supplies the unpublished dependencies locally.
+Installing the archives together tests matching local dependency snapshots.
 Configure the plugin as above, then use `npx simpcn init`, `npx simpcn plan`, and
 `npx simpcn migrate`. The CLI loads `.env` and `.env.local` beside the configuration, with shell variables taking precedence. Rebuild the archives and reinstall after library
 changes; archive installs are snapshots, not live links.

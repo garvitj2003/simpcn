@@ -1,0 +1,25 @@
+.motion-scene { --ease-transfer: cubic-bezier(.77, 0, .175, 1); position: relative; min-width: 0; margin: 28px 0; overflow: hidden; border: 1px solid var(--border); border-radius: 22px; background: var(--surface); color: var(--foreground); box-shadow: inset 0 1px 0 var(--surface-highlight); }
+.motion-scene-stage { min-width: 0; padding: clamp(16px, 2.5vw, 32px); }
+.motion-scene-stage > svg { display: block; width: 100%; height: auto; overflow: visible; }
+.motion-scene-caption { min-width: 0; padding: 0 20px 12px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.motion-scene[data-motion="paused"] .motion-scene-stage, .motion-scene[data-motion="paused"] .motion-scene-stage *, .motion-scene[data-motion="paused"] .motion-scene-stage *::before, .motion-scene[data-motion="paused"] .motion-scene-stage *::after { animation-play-state: paused !important; }
+.motion-scene[data-motion="reduced"] .motion-scene-stage, .motion-scene[data-motion="reduced"] .motion-scene-stage *, .motion-scene[data-motion="reduced"] .motion-scene-stage *::before, .motion-scene[data-motion="reduced"] .motion-scene-stage *::after { animation: none !important; }
+@media (max-width: 640px) { .motion-scene { border-radius: 16px; margin-block: 24px; } .motion-scene-caption { padding-inline: 16px; gap: 12px; font-size: 12px; } }
+@media (prefers-reduced-motion: reduce) { .motion-scene .motion-scene-stage, .motion-scene .motion-scene-stage * { animation: none !important; } }
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) { .motion-scene { background: var(--surface-strong); border-color: var(--foreground); box-shadow: none; } }
+@media (forced-colors: active) { .motion-scene { background: Canvas; color: CanvasText; border-color: CanvasText; box-shadow: none; } }
+
+/* A view timeline follows scroll in either direction; finite child sequences stay independent. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .motion-scene:is([data-motion="running"], [data-motion="paused"]) .motion-scene-stage {
+      animation: motion-scene-scroll-shift 1s linear both;
+      animation-timeline: view(block);
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+@keyframes motion-scene-scroll-shift {
+  from { transform: translateY(12px); }
+  to { transform: translateY(-12px); }
+}

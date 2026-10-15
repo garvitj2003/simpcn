@@ -1,0 +1,118 @@
+.fm-scene { max-width: 320px; margin-top: 22px; }
+.fm-art, .cm-art { display: block; width: 100%; height: auto; overflow: visible; }
+.fm-art { max-height: 190px; }
+.fm-ground { fill: var(--shadow); opacity: .55; }
+.fm-cover-light { stop-color: light-dark(#a4cce3, #aaa9a4); }
+.fm-cover-dark { stop-color: light-dark(#6189a7, #696969); }
+.fm-paper-light { stop-color: light-dark(#fffefa, #414141); }
+.fm-paper-dark { stop-color: light-dark(#ecf0f0, #333333); }
+.fm-cover, .fm-page { stroke: var(--border); }
+.fm-page-edge { stroke: var(--surface-highlight); stroke-width: 1.5; }
+.fm-spine { stroke: var(--line); stroke-width: 3; }
+.fm-heading-rule { stroke: var(--foreground); stroke-width: 4; opacity: .65; stroke-linecap: round; }
+.fm-body-rule { stroke: var(--muted); stroke-width: 2; opacity: .32; stroke-linecap: round; }
+.fm-bookmark { fill: var(--accent); opacity: .7; }
+.fm-question-surface { fill: var(--surface-strong); stroke: var(--border); }
+.fm-question-mark { stroke: var(--accent); stroke-width: 2; stroke-linecap: round; }
+.fm-answer-surface { fill: var(--surface-strong); stroke: var(--border); }
+.fm-check-circle { fill: var(--success); }
+.fm-check { stroke: var(--background); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.fm-answer-label { font-size: 10px; font-weight: 550; fill: var(--foreground); }
+.fm-question, .fm-answer { transform-box: fill-box; transform-origin: center; }
+.cm-scene { min-width: 0; width: 100%; margin: 0; }
+.cm-art { max-width: 560px; margin-inline: auto; }
+.cm-surface-top { stop-color: light-dark(#f9fbfc, #3b3b3b); }
+.cm-surface-bottom { stop-color: light-dark(#e7eef2, #262626); }
+.cm-card-surface { stroke: var(--border); }
+.cm-toolbar-divider { stroke: var(--line); }
+.cm-window-dot { fill: var(--muted); opacity: .3; }
+.cm-connection { stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 2 4; }
+.cm-packet { fill: var(--accent); transform-box: fill-box; transform-origin: center; }
+.cm-issue-circle, .cm-discussion-icon { stroke: var(--accent); stroke-width: 1.5; }
+.cm-issue-dot { fill: var(--accent); }
+.cm-card-title { font-size: 11px; font-weight: 600; fill: var(--foreground); letter-spacing: -.15px; }
+.cm-text-line { stroke: var(--muted); stroke-width: 2; stroke-linecap: round; opacity: .3; }
+.cm-tag { fill: var(--code-bg); }
+.cm-tag-label { fill: var(--muted); font-size: 7px; }
+.cm-message-first { fill: var(--code-bg); }
+.cm-message-second { fill: light-dark(#c5deec, #535353); }
+.cm-message-line { stroke: var(--muted); stroke-width: 2; stroke-linecap: round; opacity: .4; }
+.cm-code-icon { stroke: var(--accent); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.cm-patch-fill { fill: light-dark(#dcece5, #41463e); }
+.cm-patch-line { stroke: var(--success); stroke-width: 1.5; stroke-linecap: round; opacity: .8; }
+.cm-review-box { stroke: var(--success); stroke-width: 1.2; }
+.cm-review-check { stroke: var(--success); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+.cm-review-label { font-size: 8px; fill: var(--muted); }
+.cm-stage-label { font-size: 9px; fill: var(--muted); }
+.cm-reply, .cm-patch, .cm-review { transform-box: fill-box; transform-origin: center; }
+
+/* Predetermined explanatory sequences run once, then hold the complete illustration. */
+.fm-scene:is([data-motion="running"], [data-motion="paused"]) .fm-question { animation: fm-question 6s var(--ease-out) both; }
+.fm-scene:is([data-motion="running"], [data-motion="paused"]) .fm-answer { animation: fm-answer 6s var(--ease-out) both; }
+.cm-scene:is([data-motion="running"], [data-motion="paused"]) .cm-packet-first { animation: cm-first-packet 6s var(--ease-transfer) both; }
+.cm-scene:is([data-motion="running"], [data-motion="paused"]) .cm-packet-second { animation: cm-second-packet 6s var(--ease-transfer) both; }
+.cm-scene:is([data-motion="running"], [data-motion="paused"]) .cm-reply { animation: cm-reply 6s var(--ease-out) both; }
+.cm-scene:is([data-motion="running"], [data-motion="paused"]) .cm-patch { animation: cm-patch 6s var(--ease-out) both; }
+.cm-scene:is([data-motion="running"], [data-motion="paused"]) .cm-review { animation: cm-review 6s var(--ease-out) both; }
+.fm-scene[data-motion="paused"] .fm-question,
+.fm-scene[data-motion="paused"] .fm-answer,
+.cm-scene[data-motion="paused"] .cm-packet,
+.cm-scene[data-motion="paused"] .cm-reply,
+.cm-scene[data-motion="paused"] .cm-patch,
+.cm-scene[data-motion="paused"] .cm-review { animation-play-state: paused; }
+
+@keyframes fm-question {
+  0%, 5% { opacity: 0; transform: translate(-10px, 7px) rotate(-8deg) scale(.96); }
+  12% { opacity: 1; transform: translate(1px, -1px) rotate(2deg) scale(1.02); }
+  18%, 34% { opacity: 1; transform: none; }
+  39%, 100% { opacity: .65; transform: none; }
+}
+@keyframes fm-answer {
+  0%, 33% { opacity: 0; transform: translate(-16px, -10px) rotate(-4deg) scale(.96); }
+  41% { opacity: 1; transform: translate(2px, 1px) rotate(1deg) scale(1.02); }
+  47%, 100% { opacity: 1; transform: none; }
+}
+@keyframes cm-first-packet {
+  0%, 15% { opacity: 0; transform: translate(-12px, 0) scale(1); }
+  18% { opacity: .9; transform: translate(-9px, -1px) scale(1.5, .8); }
+  22% { opacity: .9; transform: translate(2px, -3px) scale(2.3, .7); }
+  26% { opacity: .9; transform: translate(14px, 0) scale(.9, 1.15); }
+  29%, 100% { opacity: 0; transform: translate(14px, 0) scale(1); }
+}
+@keyframes cm-reply {
+  0%, 26% { opacity: 0; transform: translate(-14px, 5px) rotate(-3deg) scale(.97); }
+  33% { opacity: 1; transform: translate(2px, -1px) rotate(.5deg) scale(1.01); }
+  39%, 100% { opacity: 1; transform: none; }
+}
+@keyframes cm-second-packet {
+  0%, 43% { opacity: 0; transform: translate(-12px, 0) scale(1); }
+  46% { opacity: .9; transform: translate(-9px, -1px) scale(1.5, .8); }
+  50% { opacity: .9; transform: translate(2px, -3px) scale(2.3, .7); }
+  54% { opacity: .9; transform: translate(14px, 0) scale(.9, 1.15); }
+  57%, 100% { opacity: 0; transform: translate(14px, 0) scale(1); }
+}
+@keyframes cm-patch {
+  0%, 54% { opacity: 0; transform: translate(-16px, 6px) rotate(-3deg) scale(.97); }
+  62% { opacity: 1; transform: translate(2px, -1px) rotate(.5deg) scale(1.01); }
+  68%, 100% { opacity: 1; transform: none; }
+}
+@keyframes cm-review {
+  0%, 73% { opacity: 0; transform: translateY(4px) scale(.96); }
+  79% { opacity: 1; transform: translateY(-1px) scale(1.03); }
+  85%, 100% { opacity: 1; transform: none; }
+}
+@media (max-width: 640px) {
+  .fm-scene { max-width: 270px; margin-top: 12px; }
+  .cm-art { max-width: 430px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fm-scene .fm-question, .fm-scene .fm-answer,
+  .cm-scene .cm-packet, .cm-scene .cm-reply, .cm-scene .cm-patch, .cm-scene .cm-review { animation: none !important; transform: none !important; }
+  .cm-packet { opacity: 0; }
+}
+@media (forced-colors: active) {
+  .fm-art, .cm-art { forced-color-adjust: auto; }
+  .fm-page, .fm-cover, .fm-question-surface, .fm-answer-surface, .cm-card-surface { fill: Canvas; stroke: CanvasText; }
+  .fm-answer-label, .cm-card-title, .cm-stage-label, .cm-review-label, .cm-tag-label { fill: CanvasText; }
+  .fm-heading-rule, .fm-body-rule, .fm-question-mark, .cm-code-icon, .cm-discussion-icon, .cm-patch-line, .cm-review-check, .cm-review-box { stroke: CanvasText; }
+}

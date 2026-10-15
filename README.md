@@ -5,10 +5,36 @@ rewriting supported static references. Simpcn scans and fingerprints files,
 plans changes, uploads and verifies assets, and rewrites production references
 through Vite or Next.js. Development continues to use local public assets.
 
-The packages are versioned **0.1.0** and have not been published to npm yet.
-Use local archives for controlled testing. Requires Node.js 24.11+.
+**Simpcn 0.1.0 is published on npm.** Requires Node.js 24.11+ for the
+framework integrations.
 
-## Local installation
+## Install from npm
+
+From an existing Next.js or Vite application's directory:
+
+```sh
+npm install -D simpcn
+npx simpcn init
+```
+
+Init detects the framework and can install its adapter. Add the printed
+integration to the existing framework configuration, configure an existing
+storage bucket and public delivery URL, then plan, migrate, and build.
+Alternatively install the adapter explicitly:
+
+```sh
+# Next.js
+npm install -D simpcn @simpcn/next
+
+# Or Vite
+npm install -D simpcn @simpcn/vite
+```
+
+The website in `apps/web` includes setup guides, compatibility details, and
+supported-reference limitations at `/docs`.
+
+
+## Local checkout installation (contributors)
 
 From this repository:
 
@@ -17,7 +43,7 @@ pnpm install
 pnpm pack:local
 ```
 
-From your application's directory, install the unpublished dependencies together
+To test a local checkout instead of the npm release, install the generated archives together
 (replace `/path/to/simpcn` with this checkout):
 
 ```sh
@@ -51,7 +77,7 @@ npx simpcn init
 Init detects and confirms Vite, Next.js or core-only setup, asks for the storage
 provider, and creates `simpcn.config.ts`. Bucket defaults to the project name;
 prefix defaults to `assets`. Existing declared adapters are not reinstalled.
-For unpublished installation through the wizard, use `--integration-package`
+For local archive installation through the wizard, use `--integration-package`
 with your adapter archive. Flags and `--yes` support noninteractive setup.
 
 Fill in the commented `storage.endpoint` when using MinIO/R2, and set

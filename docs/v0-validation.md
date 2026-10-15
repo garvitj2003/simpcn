@@ -1,6 +1,8 @@
 # v0 validation checkpoint
 
-Packages: 0.1.0. Status: ready for controlled local testing; not published to npm.
+Historical checkpoint from before npm publication. Packages: 0.1.0.
+See the root README for current npm installation; the evidence below records
+the earlier local-archive validation.
 
 ## Environment
 

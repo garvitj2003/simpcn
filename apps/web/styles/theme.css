@@ -1,0 +1,57 @@
+:root {
+  color-scheme: light;
+  --background: light-dark(#faf8f5, #181818);
+  --foreground: light-dark(#293239, #f2eee7);
+  --muted: light-dark(#52616b, #b5b2ac);
+  --accent: light-dark(#4a6f8a, #ded8ce);
+  --line: light-dark(rgb(41 50 57 / 10%), rgb(235 232 225 / 13%));
+  --surface: light-dark(rgb(255 255 255 / 22%), rgb(58 58 58 / 48%));
+  --surface-strong: light-dark(#f0f3f4, #292929);
+  --border: light-dark(rgb(255 255 255 / 64%), rgb(238 235 228 / 19%));
+  --surface-highlight: light-dark(rgb(255 255 255 / 76%), rgb(250 247 240 / 12%));
+  --shadow: light-dark(rgb(41 50 57 / 8%), rgb(0 0 0 / 22%));
+  --code-bg: light-dark(rgb(200 217 230 / 28%), rgb(224 221 214 / 8%));
+  --code-ink: light-dark(#344854, #e6e1d8);
+  --success: light-dark(#355c53, #c8cec3);
+  --warning: light-dark(#854f31, #d8c6ac);
+  --primary-fill: light-dark(rgb(41 50 57 / 10%), rgb(232 227 217 / 13%));
+  --primary-hover: light-dark(rgb(41 50 57 / 15%), rgb(232 227 217 / 21%));
+  --secondary-fill: light-dark(rgb(255 255 255 / 10%), rgb(242 238 230 / 6%));
+  --secondary-hover: light-dark(rgb(255 255 255 / 26%), rgb(242 238 230 / 13%));
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+body { background: var(--background); color: var(--foreground); }
+::selection { background: var(--accent); color: var(--background); }
+html .desktop-nav a, html .mobile-menu nav a { color: var(--foreground); }
+html .hero-description code { color: var(--foreground); background: var(--code-bg); }
+html .hero-description .public-highlight { border-color: var(--border); background: var(--surface); box-shadow: inset 0 1px 0 var(--surface-highlight); }
+html .nav-island { border-color: var(--border); background: var(--surface); box-shadow: inset 0 1px 0 var(--surface-highlight), 0 4px 14px var(--shadow); }
+html .mobile-menu nav { background: var(--background); border-color: var(--line); }
+html .nav-actions .mobile-menu[open] summary { background: var(--code-bg); }
+html .glass-button { --glass-ink: var(--foreground); --glass-fill: var(--secondary-fill); --glass-hover: var(--secondary-hover); border-color: var(--border); box-shadow: inset 0 1px 0 var(--surface-highlight), 0 3px 10px var(--shadow); }
+html .glass-button[data-variant="primary"] { --glass-fill: var(--primary-fill); --glass-hover: var(--primary-hover); border-color: var(--line); }
+html .glass-button[data-variant="washed"] { --glass-fill: transparent; --glass-hover: var(--code-bg); border-color: transparent; box-shadow: none; }
+html .glass-button[data-variant="link"] { --glass-fill: transparent; border-color: transparent; box-shadow: none; }
+html .glass-button:focus-visible { outline-color: var(--foreground); }
+html .nav-actions .nav-cta { border-color: transparent; box-shadow: none; }
+html .demo-source-reference { border-color: var(--border); background: var(--surface); }
+html .demo-unchanged { color: var(--success); }
+html .demo-steps button[aria-pressed="true"] { color: var(--foreground); border-color: var(--border); background: var(--surface); }
+html .demo-data-connection, html .demo-arrival-ring, html .demo-production-ring { stroke: var(--accent); }
+html .demo-request-packet { fill: var(--accent); }
+.theme-toggle { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 44px; width: 44px; height: 44px; border: 0; border-radius: 999px; background: transparent; color: var(--foreground); cursor: pointer; touch-action: manipulation; }
+.theme-toggle svg { width: 19px; height: 19px; }
+.theme-toggle:active { background: var(--code-bg); }
+@media (hover: hover) and (pointer: fine) { .theme-toggle:hover { background: var(--code-bg); } }
+@media (max-width: 380px) { .nav-actions .nav-cta { display: none; } }
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  html .nav-island, html .glass-button { background: var(--surface-strong); border-color: var(--foreground); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  html .glass-button[data-variant="link"] { background: transparent; border-color: transparent; }
+}
+@media (forced-colors: active) {
+  html .nav-island, html .glass-button, html .demo-source-reference { background: Canvas; color: CanvasText; border-color: CanvasText; box-shadow: none; }
+  html .glass-button:focus-visible { outline-color: Highlight; }
+}
+

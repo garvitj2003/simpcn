@@ -1,7 +1,7 @@
 # @simpcn/core
 
 Read-only asset inventory and migration planning for Node.js 24+. The workspace
-root is private; this package is intended to be publishable (name is provisional).
+root is private; `@simpcn/core` is published as a dependency of Simpcn.
 
 Shared configuration loading is exported from core so the CLI and framework
 integrations apply the same defaults and path rules. `publicBaseUrl` is optional for

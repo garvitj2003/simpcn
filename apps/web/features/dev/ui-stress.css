@@ -1,0 +1,11 @@
+.ui-stress { padding: 32px max(16px, env(safe-area-inset-right)) calc(120px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
+.ui-stress-heading { max-width: 60ch; margin-bottom: 32px; }
+.ui-stress-heading h1 { font: 600 28px/1.2 var(--font-geist-sans), sans-serif; letter-spacing: -.02em; }
+.ui-stress-heading p { line-height: 1.6; }
+.ui-stress-tools { display: flex; align-items: center; gap: 16px; }
+.ui-stress-tools > button { padding: 10px; min-height: 44px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--foreground); }
+.ui-stress-surface { display: grid; gap: 24px; min-width: 0; width: 100%; }
+.ui-stress-surface > * { min-width: 0; max-width: 100%; }
+.ui-stress-switch { position: fixed; z-index: 40; bottom: max(16px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); display: flex; padding: 4px; gap: 4px; max-width: calc(100% - 24px); border-radius: 8px; background: var(--surface-strong); box-shadow: 0 4px 20px var(--shadow); }
+.ui-stress-switch button { min-height: 44px; padding: 8px 12px; border: 0; border-radius: 5px; background: transparent; color: var(--foreground); font: 13px/1.3 system-ui, sans-serif; cursor: pointer; }
+.ui-stress-switch button[aria-pressed="true"] { background: var(--foreground); color: var(--background); }

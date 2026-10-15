@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" fill="currentColor">
+  <style>svg{color:#4a6f8a}@media(prefers-color-scheme:dark){svg{color:#ded8ce}}</style>
+  <circle cx="8" cy="5" r="2.5"/>
+  <circle cx="15" cy="5" r="2.5"/>
+  <circle cx="22" cy="5" r="2.5"/>
+  <circle cx="5" cy="12" r="2.5"/>
+  <circle cx="12" cy="12" r="2.5"/>
+  <circle cx="19" cy="12" r="2.5"/>
+  <circle cx="11" cy="19" r="2.5"/>
+  <circle cx="18" cy="19" r="2.5"/>
+  <circle cx="25" cy="19" r="2.5"/>
+  <circle cx="8" cy="26" r="2.5"/>
+  <circle cx="15" cy="26" r="2.5"/>
+  <circle cx="22" cy="26" r="2.5"/>
+</svg>

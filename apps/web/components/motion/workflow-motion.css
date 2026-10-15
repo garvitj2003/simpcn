@@ -1,0 +1,75 @@
+.wm-scene { margin: 0 0 40px; }
+.wm-composition { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; padding: 26px 40px 30px; }
+.wm-stage { position: relative; z-index: 1; display: flex; align-items: center; flex-direction: column; text-align: center; min-width: 0; }
+.wm-icon-wrap { position: relative; width: min(100%, 180px); height: 160px; }
+.wm-icon { display: block; width: 100%; height: 100%; overflow: visible; }
+.wm-stage-copy { display: flex; flex-direction: column; align-items: center; }
+.wm-step-name { display: block; color: var(--foreground); font-size: 13px; line-height: 1.6; font-weight: 600; letter-spacing: -.01em; }
+.wm-fingerprint-token { display: inline-flex; align-items: center; justify-content: center; gap: 5px; margin-top: 10px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--code-bg); color: var(--code-ink); font-family: var(--font-geist-mono), monospace; font-size: 10px; line-height: 1.5; }
+.wm-fingerprint-token svg { width: 13px; height: 13px; flex: 0 0 13px; }
+.wm-done { position: absolute; display: grid; place-items: center; width: 25px; height: 25px; right: 19px; bottom: 19px; border: 1px solid var(--border); border-radius: 50%; color: light-dark(#fff, #292c27); background: light-dark(#598f7e, #c8cec3); box-shadow: 0 3px 8px var(--shadow); }
+.wm-done svg { width: 20px; height: 20px; }
+.wm-connection { position: absolute; top: 119px; height: 1px; width: calc(33.333% - 56px); background: var(--line); }
+.wm-connection-one { left: calc(16.667% + 30px); }
+.wm-connection-two { left: calc(50% + 26px); }
+.wm-connection span { position: absolute; left: 0; top: -2px; height: 5px; width: 100%; opacity: 0; }
+.wm-connection span::after { content: ""; display: block; width: 20px; height: 4px; border-radius: 999px; background: linear-gradient(90deg, transparent, var(--accent)); }
+.wm-discover-files, .wm-upload-file, .wm-build-picture { transform-box: fill-box; transform-origin: center; }
+.wm-scene:is([data-motion="running"], [data-motion="paused"]) .wm-discover-files { animation: wm-discover-files 6s var(--ease-out) both; }
+.wm-scene:is([data-motion="running"], [data-motion="paused"]) .wm-upload-file { animation: wm-upload 6s var(--ease-out) both; }
+.wm-scene:is([data-motion="running"], [data-motion="paused"]) .wm-build-picture { animation: wm-picture 6s var(--ease-out) both; }
+.wm-scene:is([data-motion="running"], [data-motion="paused"]) .wm-mark-discover { animation: wm-discovered 6s var(--ease-out) both; }
+.wm-scene:is([data-motion="running"], [data-motion="paused"]) .wm-mark-migrate { animation: wm-migrated 6s var(--ease-out) both; }
+.wm-scene:is([data-motion="running"], [data-motion="paused"]) .wm-mark-build { animation: wm-built 6s var(--ease-out) both; }
+.wm-scene:is([data-motion="running"], [data-motion="paused"]) .wm-connection-one span { animation: wm-packet-one 6s var(--ease-transfer) both; }
+.wm-scene:is([data-motion="running"], [data-motion="paused"]) .wm-connection-two span { animation: wm-packet-two 6s var(--ease-transfer) both; }
+.wm-scene[data-motion="paused"] * { animation-play-state: paused !important; }
+@keyframes wm-discover-files {
+  0%, 4% { transform: translateY(4px) rotate(0) scale(1); }
+  9% { transform: translateY(6px) rotate(-2deg) scale(1.02, .98); }
+  17% { transform: translateY(-20px) rotate(-5deg) scale(.99, 1.03); }
+  24% { transform: translateY(-18px) rotate(2deg) scale(1); }
+  30% { transform: translateY(2px) rotate(0) scale(1.02, .98); }
+  35%, 100% { transform: none; }
+}
+@keyframes wm-upload {
+  0%, 30% { opacity: 0; transform: translate(-38px, 4px) rotate(-12deg) scale(.97); }
+  35% { opacity: 1; transform: translate(-30px, -8px) rotate(-12deg) scale(.97, 1.04); }
+  41% { opacity: 1; transform: translate(2px, -14px) rotate(5deg) scale(1.03, .98); }
+  47% { opacity: 1; transform: translate(-12px, 10px) rotate(-4deg) scale(.98, 1.04); }
+  52% { opacity: .8; transform: translate(-30px, 46px) rotate(-7deg) scale(.94); }
+  56%, 100% { opacity: 0; transform: translate(-30px, 50px) rotate(-7deg) scale(.94); }
+}
+@keyframes wm-picture {
+  0%, 69% { opacity: 0; transform: translate(-16px, 7px) rotate(-4deg) scale(.97); }
+  77% { opacity: 1; transform: translate(2px, -1px) rotate(1deg) scale(1.02); }
+  83%, 100% { opacity: 1; transform: none; }
+}
+@keyframes wm-discovered { 0%, 26% { opacity: 0; transform: translateY(5px) scale(.96); } 31% { opacity: 1; transform: translateY(-1px) scale(1.05); } 36%, 100% { opacity: 1; transform: none; } }
+@keyframes wm-migrated { 0%, 53% { opacity: 0; transform: translateY(5px) scale(.96); } 58% { opacity: 1; transform: translateY(-1px) scale(1.05); } 63%, 100% { opacity: 1; transform: none; } }
+@keyframes wm-built { 0%, 81% { opacity: 0; transform: translateY(5px) scale(.96); } 86% { opacity: 1; transform: translateY(-1px) scale(1.05); } 91%, 100% { opacity: 1; transform: none; } }
+@keyframes wm-packet-one { 0%, 26% { opacity: 0; transform: translateX(0); } 28% { opacity: .8; } 36% { opacity: .8; transform: translateX(calc(100% - 20px)); } 39%, 100% { opacity: 0; transform: translateX(calc(100% - 20px)); } }
+@keyframes wm-packet-two { 0%, 57% { opacity: 0; transform: translateX(0); } 59% { opacity: .8; } 69% { opacity: .8; transform: translateX(calc(100% - 20px)); } 72%, 100% { opacity: 0; transform: translateX(calc(100% - 20px)); } }
+@media (max-width: 900px) { .wm-composition { gap: 16px; padding-inline: 20px; } .wm-fingerprint-token { font-size: 9px; padding-inline: 6px; } .wm-connection { width: calc(33.333% - 40px); } }
+@media (max-width: 600px) {
+  .wm-composition { grid-template-columns: 1fr; gap: 20px; padding: 24px 18px; }
+  .wm-stage { flex-direction: row; gap: 20px; max-width: 380px; margin: 0 auto; width: 100%; text-align: left; }
+  .wm-icon-wrap { flex: 0 0 118px; width: 118px; height: 112px; }
+  .wm-stage-copy { align-items: flex-start; }
+  .wm-connection { display: none; }
+  .wm-done { width: 20px; height: 20px; right: 11px; bottom: 11px; }
+  .wm-done svg { width: 16px; height: 16px; }
+  .wm-fingerprint-token { margin-top: 6px; }
+}
+@media (max-width: 370px) { .wm-stage { gap: 12px; } .wm-icon-wrap { flex-basis: 94px; width: 94px; height: 102px; } .wm-step-name { font-size: 12px; } }
+@media (prefers-reduced-motion: reduce) { .wm-scene * { animation: none !important; } }
+@media (prefers-contrast: more), (prefers-reduced-transparency: reduce) { .wm-fingerprint-token { border-color: var(--foreground); background: var(--surface-strong); } .wm-done { box-shadow: none; } }
+@media (forced-colors: active) { .wm-fingerprint-token, .wm-done { color: CanvasText; background: Canvas; border-color: CanvasText; box-shadow: none; } .wm-connection { background: CanvasText; } .wm-icon { opacity: .85; } }
+
+.wm-scene:is([data-motion="running"], [data-motion="paused"]) .wm-stage { animation: wm-stage-elevate 500ms var(--ease-out) both; }
+.wm-scene:is([data-motion="running"], [data-motion="paused"]) .wm-migrate { animation-delay: 60ms; }
+.wm-scene:is([data-motion="running"], [data-motion="paused"]) .wm-transform { animation-delay: 120ms; }
+@keyframes wm-stage-elevate {
+  from { transform: translateY(18px) scale(.97); opacity: .65; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}

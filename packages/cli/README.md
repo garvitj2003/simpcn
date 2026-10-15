@@ -1,11 +1,9 @@
 # simpcn
 
 CLI for scanning, planning and migrating public assets. Requires Node.js 24+.
-Packages have not been published yet; use local archives during development.
+Version 0.1.0 is published on npm. The framework integrations require Node.js 24.11+.
 
 ## Setup
-
-After publication:
 
 ```sh
 npm install -D simpcn
@@ -31,9 +29,9 @@ An existing configuration requires `--force` to replace.
 npx simpcn init --yes --framework vite --provider minio --endpoint http://localhost:9000 --bucket test-cn --prefix assets
 ```
 
-Use `--skip-install` to install the integration yourself. For local unpublished
+Use `--skip-install` to install the integration yourself. For local checkout
 testing, use `--integration-package /absolute/path/simpcn-vite-0.1.0.tgz`, or
-`simpcn-next-0.1.0.tgz` with `--framework next`. Install unpublished core and
+`simpcn-next-0.1.0.tgz` with `--framework next`. Install matching local core and
 transforms archives in the consuming project as well.
 `--json` and noninteractive terminals suppress prompts; flags override defaults.
 If dependency installation fails, generated settings are retained and the CLI

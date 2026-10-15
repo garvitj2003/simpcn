@@ -1,0 +1,2 @@
+// Light is the default; only an explicitly saved choice enables dark mode.
+export const themeScript = `(function(){var k='simpcn-theme';function read(){try{return localStorage.getItem(k)}catch(e){return null}}function apply(){var t=read()==='dark'?'dark':'light';document.documentElement.dataset.theme=t;document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.content=t==='dark'?'#181818':'#faf8f5'});window.dispatchEvent(new Event('simpcn-theme-change'))}apply();window.addEventListener('storage',function(e){if(e.key===k||e.key===null)apply()})})()`;
