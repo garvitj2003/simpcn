@@ -26,9 +26,10 @@ export function SectionMotion({ children }: { children: ReactNode }) {
       clearTimeout(idleTimer);
       if (reflection) reflection.dataset.reflectionPaused = String(document.hidden || !reflectionVisible);
       if (!reflection || reflectionPlayed || !reflectionVisible || preference.matches || document.hidden) return;
+      const target = reflection;
       idleTimer = setTimeout(() => {
         reflectionPlayed = true;
-        reflection.dataset.reflection = "play";
+        target.dataset.reflection = "play";
       }, 1500);
     }
 

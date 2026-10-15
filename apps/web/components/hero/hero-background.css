@@ -1,0 +1,20 @@
+.hero-background {
+  --hero-gradient-shape: ellipse 110% 105%;
+  --hero-gradient-origin: 100% 100%;
+  background: radial-gradient(
+    var(--hero-gradient-shape) at var(--hero-gradient-origin),
+    light-dark(rgb(139 193 232 / 58%), rgb(95 150 190 / 23%)) 0%,
+    light-dark(rgb(139 193 232 / 30%), rgb(95 150 190 / 12%)) 35%,
+    light-dark(rgb(139 193 232 / 9%), rgb(95 150 190 / 4%)) 62%,
+    transparent 85%
+  );
+  mask-image: linear-gradient(180deg, black 80%, transparent 100%);
+}
+
+/* The stacked hero is tall: a circle avoids stretching the blue into a narrow oval. */
+@media (max-width: 900px) {
+  .hero-background {
+    --hero-gradient-shape: circle farthest-corner;
+    --hero-gradient-origin: 110% 100%;
+  }
+}
