@@ -38,6 +38,10 @@ export function withSimpcn(configuration: Configuration = {}, options: SimpcnNex
     const previous = original.webpack;
     return {
       ...original,
+      // Installed packages may otherwise be externalized by the Pages Router
+      // before Webpack applies the generated assets-module alias. That would
+      // execute the development identity helper on the production server/ISR.
+      transpilePackages: [...new Set([...(original.transpilePackages ?? []), '@simpcn/next'])],
       // Turbopack treats /absolute/path as a server-relative URL; use an app-relative alias.
       turbopack: { ...original.turbopack, rules, resolveAlias: { ...original.turbopack?.resolveAlias, '@simpcn/next/assets': './' + path.relative(cwd, runtime).split(path.sep).join('/') } },
       webpack(config, webpackContext) {

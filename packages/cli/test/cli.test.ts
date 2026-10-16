@@ -6,6 +6,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { MemoryStorageAdapter, StorageError } from '@simpcn/core';
 import { runCli } from '../src/run.js';
+import { version } from '../src/version.js';
 import { loadConfig } from '../src/config.js';
 
 let cwd: string;
@@ -36,7 +37,7 @@ describe('CLI commands', () => {
     expect(help.stdout).toContain('simpcn <command>');
     expect(help.stderr).toBe('');
     expect(await cli(['--version'])).toBe(0);
-    expect(stdout.trim()).toBe('0.1.0');
+    expect(stdout.trim()).toBe(version);
     for (const args of [['unknown'], ['plan', '--wat'], ['plan', '--force'], ['migrate', '--check-remote'],
       ['plan', '--overwrite'], ['plan', '--config', ''], ['plan', '--bucket', 'a', '--bucket', 'b']]) {
       expect(await cli([...args, '--json'])).toBe(2);

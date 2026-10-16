@@ -8,7 +8,7 @@ function loader(this: Context, code: string, inputMap: unknown) {
   const done = this.async();
   void (async () => {
     const { mapResolver } = await import('./map.js');
-    const { transformJs } = await import('@simpcn/transforms');
+    const { transformJs } = await import('@simpcn/transforms-js');
     const options = this.getOptions();
     const result = transformJs(code, this.resourcePath, mapResolver(options), message => this.emitWarning(new Error(message)), {
       helperModule: '@simpcn/next/assets', nextImages: options.nextImages,

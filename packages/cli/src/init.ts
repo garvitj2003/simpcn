@@ -1,10 +1,12 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
-import { input as inputPrompt, select as selectPrompt } from '@inquirer/prompts';
+import inputPrompt from '@inquirer/input';
+import selectPrompt from '@inquirer/select';
 import pc from 'picocolors';
 import { initializeConfig } from './config.js';
 import type { Flags } from './args.js';
+import { version } from './version.js';
 
 export interface InitOptions {
   interactive?: boolean;
@@ -66,7 +68,7 @@ export async function initializeProject(input: Flags, cwd: string, options: Init
     const manager = pkg.packageManager?.split('@')[0] ?? (await exists(path.join(cwd, 'pnpm-lock.yaml')) ? 'pnpm' : await exists(path.join(cwd, 'yarn.lock')) ? 'yarn' : await exists(path.join(cwd, 'bun.lock')) ? 'bun' : 'npm');
     if (!['npm', 'pnpm', 'yarn', 'bun'].includes(manager)) throw new Error(`Unsupported package manager: ${manager}`);
     if ((!dependencies[packageName]) && !flags['skip-install']) {
-      const integration = flags['integration-package'] ? path.resolve(cwd, flags['integration-package']) : `${packageName}@0.1.0`;
+      const integration = flags['integration-package'] ? path.resolve(cwd, flags['integration-package']) : `${packageName}@${version}`;
       if (flags['integration-package'] && (!integration.endsWith('.tgz') || !await exists(integration))) throw new Error('integration-package must point to an existing .tgz archive');
       const packages = [integration];
       const args = manager === 'npm' ? ['install', '-D', ...packages] : ['add', '-D', ...packages];

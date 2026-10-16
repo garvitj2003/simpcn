@@ -3,10 +3,15 @@ import { mkdtemp, mkdir, writeFile, readFile, readdir, realpath, rm } from 'node
 import path from 'node:path';
 import { tmpdir } from 'node:os';
 import { runInNewContext } from 'node:vm';
+import { pathToFileURL } from 'node:url';
 import { build, resolveConfig as resolveViteConfig } from 'vite';
 import { generateManifest, createAssetUrlResolver, type DeploymentState } from '@simpcn/core';
-import { simpcn } from '../src/index.js';
+import { simpcn as workspaceSimpcn } from '../src/index.js';
 import { transformJs, transformHtml, transformCss } from '../src/transforms.js';
+
+const { simpcn } = process.env.SIMPCN_PACKED_CONSUMER
+  ? await import(pathToFileURL(path.join(process.env.SIMPCN_PACKED_CONSUMER, 'node_modules/@simpcn/vite/dist/index.js')).href) as { simpcn: typeof workspaceSimpcn }
+  : { simpcn: workspaceSimpcn };
 
 let root: string;
 let state: DeploymentState;

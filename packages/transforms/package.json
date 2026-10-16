@@ -1,9 +1,11 @@
 {
   "name": "@simpcn/transforms",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "files": [
-    "dist"
+    "dist/*.js",
+    "dist/*.d.ts",
+    "dist/THIRD_PARTY_NOTICES.txt"
   ],
   "exports": {
     ".": {
@@ -15,18 +17,13 @@
     "node": ">=24.11.0"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && node ../../scripts/bundle-package.mjs transforms",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@babel/parser": "^8.0.7",
-    "@babel/traverse": "^8.0.7",
-    "@babel/types": "^8.0.6",
     "@simpcn/core": "workspace:*",
-    "magic-string": "^1.4.3",
-    "parse5": "^8.0.1",
-    "postcss": "^8.5.29",
-    "postcss-value-parser": "^4.2.0"
+    "@simpcn/transforms-js": "workspace:*",
+    "magic-string": "^1.4.3"
   },
   "description": "Shared parser-based asset URL transformations for simpcn framework adapters.",
   "license": "MIT",
@@ -39,5 +36,10 @@
   "bugs": {
     "url": "https://github.com/garvitj2003/simpcn/issues"
   },
-  "author": "Garvit jain"
+  "author": "Garvit jain",
+  "devDependencies": {
+    "parse5": "^8.0.1",
+    "postcss": "^8.5.29",
+    "postcss-value-parser": "^4.2.0"
+  }
 }

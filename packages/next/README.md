@@ -1,6 +1,6 @@
 # @simpcn/next — v0 adapter
 
-Version 0.1.0 is published on npm: `npm install -D simpcn @simpcn/next`.
+Install from npm: `npm install -D simpcn @simpcn/next`.
 
 The adapter supports direct public-asset delivery in production Next.js 16.4 with
 Turbopack and Webpack. It supports static DOM media JSX/TSX attributes, verified

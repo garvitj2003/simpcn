@@ -1,6 +1,6 @@
 {
   "name": "@simpcn/next",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "files": [
     "dist"
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@simpcn/core": "workspace:*",
-    "@simpcn/transforms": "workspace:*"
+    "@simpcn/transforms-js": "workspace:*"
   },
   "peerDependencies": {
     "next": "^16.4.0"

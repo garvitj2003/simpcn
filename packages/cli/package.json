@@ -1,26 +1,26 @@
 {
   "name": "simpcn",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "bin": {
     "simpcn": "dist/bin.js"
   },
   "files": [
-    "dist"
+    "dist/bin.js",
+    "dist/config.js",
+    "dist/config.d.ts",
+    "dist/THIRD_PARTY_NOTICES.txt"
   ],
   "engines": {
     "node": ">=24"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node -e \"require('node:fs').chmodSync('dist/bin.js', 0o755)\"",
+    "build": "tsc -p tsconfig.build.json && node ../../scripts/bundle-package.mjs cli && node -e \"require('node:fs').chmodSync('dist/bin.js', 0o755)\"",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@inquirer/prompts": "^8.7.3",
-    "@simpcn/core": "workspace:*",
-    "@simpcn/storage-s3": "workspace:*",
-    "picocolors": "^1.1.1"
+    "@simpcn/core": "workspace:*"
   },
   "exports": {
     ".": {
@@ -39,5 +39,11 @@
   "bugs": {
     "url": "https://github.com/garvitj2003/simpcn/issues"
   },
-  "author": "Garvit jain"
+  "author": "Garvit jain",
+  "devDependencies": {
+    "@inquirer/input": "^5.1.7",
+    "@inquirer/select": "^5.2.6",
+    "@simpcn/storage-s3": "workspace:*",
+    "picocolors": "^1.1.1"
+  }
 }

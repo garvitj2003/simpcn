@@ -6,6 +6,7 @@ import { initializeProject } from '../src/init.js';
 import { loadEnvironment } from '../src/environment.js';
 import { loadConfig } from '../src/config.js';
 import { runCli } from '../src/run.js';
+import { version } from '../src/version.js';
 
 let cwd: string;
 beforeEach(async () => { cwd = await mkdtemp(path.join(tmpdir(), 'simpcn-setup-')); });
@@ -33,7 +34,7 @@ it('runs the wizard, uses the project package manager and creates credential gui
   const answers = ['us-east-1', 'chosen-bucket', 'images'];
   const install = vi.fn(async () => {});
   const result = await initializeProject({ endpoint: 'http://127.0.0.1:9000' }, cwd, { interactive: true, select: async () => choices.shift()!, ask: async () => answers.shift()!, install });
-  expect(install).toHaveBeenCalledWith('pnpm', ['add', '-D', '@simpcn/vite@0.1.0'], cwd);
+  expect(install).toHaveBeenCalledWith('pnpm', ['add', '-D', `@simpcn/vite@${version}`], cwd);
   expect((await loadConfig({}, cwd)).storage).toMatchObject({ bucket: 'chosen-bucket', prefix: 'images', provider: 'minio' });
   expect(result.warnings.join(' ')).toContain('Vite config');
   expect(await readFile(path.join(cwd, '.gitignore'), 'utf8')).toContain('.env.local');
@@ -63,7 +64,7 @@ it('installs the Next adapter with the project package manager', async () => {
   const install = vi.fn(async () => {});
   const result = await initializeProject({ framework: 'next', yes: true }, cwd, { install });
   expect(result.framework).toBe('next');
-  expect(install).toHaveBeenCalledWith('npm', ['install', '-D', '@simpcn/next@0.1.0'], cwd);
+  expect(install).toHaveBeenCalledWith('npm', ['install', '-D', `@simpcn/next@${version}`], cwd);
 });
 it('offers Next in the menu and preselects it for a Next project', async () => {
   await pkg({ dependencies: { next: '^16.4.0' }, devDependencies: { '@simpcn/next': '0.1.0' } });

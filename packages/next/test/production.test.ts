@@ -12,6 +12,8 @@ import { generateManifest } from '@simpcn/core';
 const exec = promisify(execFile);
 const require = createRequire(import.meta.url);
 const packageRoot = fileURLToPath(new URL('..', import.meta.url));
+const adapterRoot = process.env.SIMPCN_PACKED_CONSUMER
+  ? path.join(process.env.SIMPCN_PACKED_CONSUMER, 'node_modules/@simpcn/next') : packageRoot;
 const repo = path.resolve(packageRoot, '../..');
 const nextBin = require.resolve('next/dist/bin/next');
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -37,7 +39,7 @@ for (const bundler of ['turbopack', 'webpack']) it(`unchanged JSX emits direct C
     await mkdir(path.join(root, 'public/images'), { recursive: true });
     await mkdir(path.join(root, 'node_modules'));
     await mkdir(path.join(root, 'node_modules/@simpcn'));
-    await symlink(packageRoot, path.join(root, 'node_modules/@simpcn/next'));
+    await symlink(adapterRoot, path.join(root, 'node_modules/@simpcn/next'));
     for (const dependency of ['next', 'react', 'react-dom']) await symlink(path.join(packageRoot, 'node_modules', dependency), path.join(root, 'node_modules', dependency));
     await writeFile(path.join(root, 'package.json'), JSON.stringify({ name: 'next-proof', private: true, dependencies: { next: '16.4.0', react: '19.3.0', 'react-dom': '19.3.0' } }));
     await writeFile(path.join(root, 'app/layout.jsx'), 'export default function Layout({children}) { return <html><body>{children}</body></html> }');

@@ -1,6 +1,6 @@
 import { it, expect } from 'vitest';
 import { parse } from '@babel/parser';
-import { transformJs } from '@simpcn/transforms';
+import { transformJs } from '@simpcn/transforms-js';
 import { mapResolver } from '../src/map.js';
 
 const resolver = mapResolver({ urls: { 'logo.png': 'https://cdn.example.com/assets/logo.png' }, basePath: '/docs' });

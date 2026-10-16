@@ -1,0 +1,48 @@
+{
+  "name": "@simpcn/transforms-js",
+  "version": "0.1.1",
+  "type": "module",
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts",
+    "dist/THIRD_PARTY_NOTICES.txt"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./attributes": {
+      "types": "./dist/attributes.d.ts",
+      "import": "./dist/attributes.js"
+    }
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node ../../scripts/bundle-package.mjs transforms-js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@simpcn/core": "workspace:*",
+    "magic-string": "^1.4.3"
+  },
+  "description": "JavaScript and JSX asset transforms without HTML or CSS tooling.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garvitj2003/simpcn.git",
+    "directory": "packages/transforms-js"
+  },
+  "homepage": "https://github.com/garvitj2003/simpcn#readme",
+  "bugs": {
+    "url": "https://github.com/garvitj2003/simpcn/issues"
+  },
+  "author": "Garvit jain",
+  "devDependencies": {
+    "@babel/parser": "^8.0.7",
+    "@babel/traverse": "^8.0.7",
+    "@babel/types": "^8.0.6"
+  }
+}

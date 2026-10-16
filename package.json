@@ -1,19 +1,20 @@
 {
   "name": "simpcn-workspace",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "pnpm build && pnpm --filter @simpcn/core test && pnpm --filter @simpcn/storage-s3 test && pnpm --filter simpcn test && pnpm --filter @simpcn/vite test && pnpm --filter @simpcn/next test",
-    "build": "pnpm --filter @simpcn/core build && pnpm --filter @simpcn/storage-s3 build && pnpm --filter simpcn build && pnpm --filter @simpcn/transforms build && pnpm --filter @simpcn/vite build && pnpm --filter @simpcn/next build",
-    "typecheck": "pnpm --filter @simpcn/core typecheck && pnpm --filter @simpcn/storage-s3 typecheck && pnpm --filter simpcn typecheck && pnpm --filter @simpcn/vite typecheck && pnpm --filter @simpcn/transforms typecheck && pnpm --filter @simpcn/next typecheck",
+    "build": "pnpm --filter @simpcn/core build && pnpm --filter @simpcn/storage-s3 build && pnpm --filter simpcn build && pnpm --filter @simpcn/transforms-js build && pnpm --filter @simpcn/transforms build && pnpm --filter @simpcn/vite build && pnpm --filter @simpcn/next build",
+    "typecheck": "pnpm --filter @simpcn/core typecheck && pnpm --filter @simpcn/storage-s3 typecheck && pnpm --filter simpcn typecheck && pnpm --filter @simpcn/vite typecheck && pnpm --filter @simpcn/transforms-js typecheck && pnpm --filter @simpcn/transforms typecheck && pnpm --filter @simpcn/next typecheck",
     "simpcn": "node packages/cli/dist/bin.js",
+    "test:packages": "pnpm pack:local && node scripts/verify-packages.mjs",
     "test:cli:minio": "pnpm build && node --env-file-if-exists=.env.local node_modules/vitest/vitest.mjs run packages/cli/test/minio.live.test.ts",
     "minio:plan": "pnpm build && node --env-file-if-exists=.env.local examples/minio.mjs",
     "minio:migrate": "pnpm build && node --env-file-if-exists=.env.local examples/minio.mjs --execute",
     "test:minio": "pnpm build && node --env-file-if-exists=.env.local node_modules/vitest/vitest.mjs run packages/storage-s3/test/minio.live.test.ts",
-    "pack:local": "pnpm build && pnpm --filter @simpcn/core --filter @simpcn/storage-s3 --filter simpcn --filter @simpcn/vite --filter @simpcn/transforms --filter @simpcn/next pack --pack-destination artifacts"
+    "pack:local": "pnpm build && pnpm --filter @simpcn/core --filter @simpcn/storage-s3 --filter simpcn --filter @simpcn/vite --filter @simpcn/transforms-js --filter @simpcn/transforms --filter @simpcn/next pack --pack-destination artifacts"
   },
   "keywords": [],
   "author": "Garvit jain",

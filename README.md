@@ -5,7 +5,7 @@ rewriting supported static references. Simpcn scans and fingerprints files,
 plans changes, uploads and verifies assets, and rewrites production references
 through Vite or Next.js. Development continues to use local public assets.
 
-**Simpcn 0.1.0 is published on npm.** Requires Node.js 24.11+ for the
+**This checkout prepares Simpcn 0.1.1.** Requires Node.js 24.11+ for the
 framework integrations.
 
 ## Install from npm
@@ -48,20 +48,18 @@ To test a local checkout instead of the npm release, install the generated archi
 
 ```sh
 npm install -D \
-  /path/to/simpcn/artifacts/simpcn-core-0.1.0.tgz \
-  /path/to/simpcn/artifacts/simpcn-storage-s3-0.1.0.tgz \
-  /path/to/simpcn/artifacts/simpcn-transforms-0.1.0.tgz \
-  /path/to/simpcn/artifacts/simpcn-0.1.0.tgz
+  /path/to/simpcn/artifacts/simpcn-core-0.1.1.tgz \
+  /path/to/simpcn/artifacts/simpcn-0.1.1.tgz
 ```
 
 Add **one** framework adapter:
 
 ```sh
 # Next.js
-npm install -D /path/to/simpcn/artifacts/simpcn-next-0.1.0.tgz
+npm install -D /path/to/simpcn/artifacts/simpcn-transforms-js-0.1.1.tgz /path/to/simpcn/artifacts/simpcn-next-0.1.1.tgz
 
 # Or Vite
-npm install -D /path/to/simpcn/artifacts/simpcn-vite-0.1.0.tgz
+npm install -D /path/to/simpcn/artifacts/simpcn-transforms-js-0.1.1.tgz /path/to/simpcn/artifacts/simpcn-transforms-0.1.1.tgz /path/to/simpcn/artifacts/simpcn-vite-0.1.1.tgz
 ```
 
 Direct npm links to workspace packages can fail on `workspace:*`. Packed archives
@@ -161,7 +159,7 @@ access or CDN freshness. Source and public files stay in place.
 ## Repository and checks
 
 Packages: `simpcn`, `@simpcn/core`, `@simpcn/storage-s3`, `@simpcn/transforms`,
-`@simpcn/vite`, and `@simpcn/next`. `apps/web` is the Next.js launch website.
+`@simpcn/transforms-js`, `@simpcn/vite`, and `@simpcn/next`. `apps/web` is the Next.js launch website.
 `examples/minio.mjs` is the direct-library example with its own baseline file.
 
 ```sh
@@ -178,3 +176,6 @@ remote objects for inspection:
 SIMPCN_MINIO_TEST=1 pnpm test:minio
 SIMPCN_MINIO_TEST=1 pnpm test:cli:minio
 ```
+
+For dependency bundling, clean consumer installs, and package verification, see
+[packaging checks](docs/packaging.md). Run `pnpm test:packages` after packaging changes.

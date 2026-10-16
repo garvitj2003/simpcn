@@ -7,6 +7,7 @@ import { prepareMigration, checkRemotePlan, migrateProject, type StorageAdapter,
 import { S3StorageAdapter, resolveS3Target } from '@simpcn/storage-s3';
 import { HELP, parseArguments } from './args.js';
 import { loadConfig, findConfig, type Config } from './config.js';
+import { version } from './version.js';
 
 export interface CliContext {
   cwd: string;
@@ -25,7 +26,7 @@ export async function runCli(args: string[], context: CliContext): Promise<numbe
     const { command, flags } = parseArguments(args);
     json = !!flags.json;
     if (flags.help || !command && !flags.version) { context.stdout(HELP); return 0; }
-    if (flags.version) { context.stdout('0.1.0\n'); return 0; }
+    if (flags.version) { context.stdout(`${version}\n`); return 0; }
     if (command === 'init') {
       const result = await initializeProject(flags, context.cwd, { ...context.setup, signal: context.signal });
       if (json) output({ command: 'init', success: true, ...result });

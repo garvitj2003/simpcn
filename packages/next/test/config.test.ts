@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 import { generateManifest } from '@simpcn/core';
 import { withSimpcn } from '../src/index.js';
 import { mapResolver } from '../src/map.js';
-import { transformJs } from '@simpcn/transforms';
+import { transformJs } from '@simpcn/transforms-js';
 
 let cwd: string;
 const context = { defaultConfig: {} };
@@ -47,11 +47,12 @@ it('requires explicit publicBaseUrl and rejects legacy JSON config', async () =>
 });
 it('preserves async user config, aliases, rules, assetPrefix and user webpack hook', async () => {
   await state();
-  const result = await withSimpcn(async () => ({ assetPrefix: 'https://chunks.example.com', basePath: '/docs',
+  const result = await withSimpcn(async () => ({ assetPrefix: 'https://chunks.example.com', basePath: '/docs', transpilePackages: ['existing-package'],
     turbopack: { resolveAlias: { existing: './existing.js' }, rules: { '*.jsx': { loaders: ['existing-loader'] } } },
     webpack: config => ({ ...config, marker: true }),
   }), { cwd })('phase-production-build', context);
   expect(result.assetPrefix).toBe('https://chunks.example.com');
+  expect(result.transpilePackages).toEqual(['existing-package', '@simpcn/next']);
   expect(result.turbopack?.resolveAlias?.existing).toBe('./existing.js');
   expect(result.turbopack?.rules?.['*.jsx']).toHaveLength(2);
   const compiled = await result.webpack!({}, {} as any);
