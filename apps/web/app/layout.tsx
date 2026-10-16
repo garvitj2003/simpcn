@@ -23,7 +23,10 @@ const headlineFont = Caveat({
 });
 
 const socialPreview = {
-  url: "/social-preview.png",
+  url: "/social-preview-v2.jpg",
+  width: 1200,
+  height: 780,
+  type: "image/jpeg",
   alt: "Simpcn landing page — Your code stays the same. The assets move to CDN.",
 };
 
