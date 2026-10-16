@@ -133,6 +133,7 @@ export async function initializeConfig(flags: Flags, cwd: string): Promise<strin
   await mkdir(directory, { recursive: true });
   // The type-only import also works before the framework package is installed.
   let serialized = JSON.stringify(content, null, 2)
+    .replace('  "exclude":', '  // Keep essential assets local: excluded files are not uploaded or rewritten to CDN URLs.\n  // Glob patterns are relative to root (omit "public/"). Your framework still serves these files.\n  // Example: ["favicon.ico", "fonts/**", "offline/**", "images/fallback.png"]\n  "exclude":')
     .replace('    "provider":', '    // Provider selects request addressing and signing defaults.\n    "provider":')
     .replace('    "endpoint":', '    // Storage API origin for uploads, not the public CDN URL.\n    "endpoint":');
   if (!content.storage.endpoint) {
@@ -140,7 +141,18 @@ export async function initializeConfig(flags: Flags, cwd: string): Promise<strin
     const note = content.storage.provider === 's3' ? 'Optional: AWS selects the API endpoint from region.' : 'Required: uncomment and enter your storage API origin before migration.';
     serialized = serialized.replace('"storage": {', `"storage": {\n    // ${note}\n    // This is the upload API, not the public asset URL.\n    // endpoint: "${example}",`);
   }
-  const publicNote = content.publicBaseUrl ? '' : '\n  // Required for production builds; include your asset prefix. Never auto-derived.\n  // publicBaseUrl: "https://cdn.example.com/assets/",\n';
+  const isR2 = content.storage.provider === 'r2';
+  let publicNote = content.publicBaseUrl ? '' : '\n  // Required for production builds; include your asset prefix. Never auto-derived.\n  // publicBaseUrl: "https://cdn.example.com/assets/",\n';
+  if (isR2) {
+    serialized = serialized.replace('"storage": {', '"storage": {\n    // R2: remove /bucket-name from the copied S3 API URL.\n    // Use only https://YOUR_ACCOUNT_ID.r2.cloudflarestorage.com; set the bucket separately below.');
+    const prefix = content.storage.prefix.replace(/\/+$/, '');
+    const publicExample = `https://pub-YOUR_ID.r2.dev/${prefix ? prefix.split('/').map(encodeURIComponent).join('/') + '/' : ''}`;
+    const guidance = '  // R2: append the storage.prefix directory to your public bucket URL.\n' +
+      `  // Example for this prefix: ${publicExample}\n` +
+      '  // If prefix is empty, use the public bucket URL without a directory suffix.\n';
+    if (content.publicBaseUrl) serialized = serialized.replace('  "publicBaseUrl":', guidance + '  "publicBaseUrl":');
+    else publicNote = '\n  // Required for production builds.\n' + guidance + `  // publicBaseUrl: ${JSON.stringify(publicExample)},\n`;
+  }
   const source = 'import type { UserConfig } from "simpcn";\n\nexport default ' + serialized.slice(0, -1).trimEnd() + ',\n' + publicNote + '} satisfies UserConfig;\n';
   try { await writeFile(filename, source, { flag: flags.force ? 'w' : 'wx' }); }
   catch (error) {

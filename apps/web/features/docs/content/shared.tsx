@@ -5,6 +5,9 @@ export const storageConfig = `import type { UserConfig } from 'simpcn';
 
 export default {
   root: 'public',
+  // Keep essential assets local. Patterns are relative to root, without public/.
+  // Example: ['favicon.ico', 'fonts/**', 'offline/**', 'images/fallback.png']
+  exclude: [],
   publicBaseUrl: 'https://cdn.example.com/assets/',
   storage: {
     provider: 's3',
