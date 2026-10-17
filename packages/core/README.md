@@ -51,7 +51,7 @@ const actions = planMigration(diffManifests(previous, current));
   per-asset results. Explicit `overwrite: true` is needed for remote conflicts.
 - `LocalDeploymentStateStore(filename)`: exclusive local state sessions, serialized
   atomic writes, and upload/verification history scoped to endpoint, bucket and
-  prefix. The default file is `.simpcn/deployment-state.json`.
+  prefix. The default file is `simpcn/deployment-state.json`.
 - `MemoryStorageAdapter`: in-memory adapter for testing without credentials.
 - `prepareMigration(options)`: read-only project scan and comparison with a scoped
   local manifest baseline. No files are written.

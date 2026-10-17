@@ -24,7 +24,7 @@ export interface Config {
 }
 const defaults: Config = {
   version: 1, root: 'public', exclude: [], storage: { provider: 's3', bucket: '', region: 'us-east-1', prefix: '' },
-  stateFile: '.simpcn/deployment-state.json', manifestFile: '.simpcn/manifest.json',
+  stateFile: 'simpcn/deployment-state.json', manifestFile: 'simpcn/.build/manifest.json',
   concurrency: 4, hashConcurrency: 8, maxAttempts: 3, retryDelayMs: 200,
   cacheControl: 'public, max-age=0, must-revalidate',
 };
@@ -133,6 +133,8 @@ export async function initializeConfig(flags: Flags, cwd: string): Promise<strin
   await mkdir(directory, { recursive: true });
   // The type-only import also works before the framework package is installed.
   let serialized = JSON.stringify(content, null, 2)
+    .replace('  "stateFile":', '  // Commit this file after migration with the matching assets so CI builds can verify them.\n  "stateFile":')
+    .replace('  "manifestFile":', '  // Local migration inventory; generated build files are ignored by Git.\n  "manifestFile":')
     .replace('  "exclude":', '  // Keep essential assets local: excluded files are not uploaded or rewritten to CDN URLs.\n  // Glob patterns are relative to root (omit "public/"). Your framework still serves these files.\n  // Example: ["favicon.ico", "fonts/**", "offline/**", "images/fallback.png"]\n  "exclude":')
     .replace('    "provider":', '    // Provider selects request addressing and signing defaults.\n    "provider":')
     .replace('    "endpoint":', '    // Storage API origin for uploads, not the public CDN URL.\n    "endpoint":');

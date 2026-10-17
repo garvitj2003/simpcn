@@ -47,7 +47,7 @@ import { assetUrl } from '@simpcn/next/assets';
 <img src={assetUrl(`/images/${name}.svg`)} alt="Product" />
 ```
 
-At build time the wrapper generates content-addressed modules in .simpcn/next:
+At build time the wrapper generates content-addressed modules in simpcn/.build/next:
 the sanitized public map and a copy of the browser-only core resolver. They use
 relative imports, avoiding Turbopack root escapes and pnpm transitive resolution.
 Webpack uses a filesystem alias; Turbopack uses an application-relative alias.
@@ -110,7 +110,7 @@ pipeline. Until this is implemented, CSS references continue to use local URLs.
 Production builds require matching verified records for every managed asset,
 including assets available to the dynamic helper. Missing, stale, uploaded-only,
 wrong-target, wrong-prefix or invalid state fails before compilation. There is no
-silent local fallback and no build-time upload. Supply a trusted deployment-state
+silent local fallback and no build-time upload. Commit the matching `simpcn/deployment-state.json` with your assets, or supply a trusted deployment-state
 artifact matching the current bytes, or run migration as a separate credentialed
 step before the build. Missing publicBaseUrl also fails. An empty managed inventory
 does not require deployment records. Local records do not prove current remote
@@ -125,7 +125,7 @@ prerendered HTML and in the started production server. An independent local
 asset-origin server returns the same bytes; this is a CDN-origin stand-in, not a
 live provider/CDN test. The fixtures include a client component, request-rendered
 App Router route, Pages Router ISR, basePath, encoding and suffixes. After build,
-tests remove public files and all .simpcn state, then verify SSR and actual ISR
+tests remove public files and all simpcn state, then verify SSR and actual ISR
 regeneration. Config tests cover CI errors, directives, config composition and
 unchanged explicit next/image settings. These tests do not yet exercise browser
 hydration/interactions or a complete standalone deployment.

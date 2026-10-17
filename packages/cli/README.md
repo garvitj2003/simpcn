@@ -67,7 +67,7 @@ and should be trusted project code. Runtime validation rejects unknown fields an
 invalid settings. Obvious AWS/R2 endpoint-provider mismatches are rejected; custom
 endpoints cannot reliably identify their storage provider.
 
-Init creates `.env.example` if missing and adds `.env`, `.env.local` and `.simpcn/`
+Init creates `.env.example` if missing and adds `.env`, `.env.local`, `simpcn/.build/`, and temporary state locks/files
 to `.gitignore`. Put credentials in `.env.local`:
 
 ```dotenv
@@ -112,3 +112,7 @@ input and selection prompt packages are used. Core and its TypeScript config
 loader remain external. Bundled dependency licenses are included in
 `dist/THIRD_PARTY_NOTICES.txt`; updating bundled dependencies requires a new build
 and release. Workspace development continues to use pnpm.
+
+Commit `simpcn/deployment-state.json` after migration with the matching assets and
+root `simpcn.config.ts`. CI builds use this verification record without storage credentials.
+The local manifest defaults to `simpcn/.build/manifest.json`. Existing explicit paths remain supported.

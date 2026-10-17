@@ -52,7 +52,7 @@ export async function initializeProject(input: Flags, cwd: string, options: Init
   }
   options.signal?.throwIfAborted();
   const config = await initializeConfig(flags, cwd);
-  const warnings: string[] = [];
+  const warnings: string[] = ['After migration, commit the configured deployment-state file with the matching assets so CI can build.'];
   if (flags.provider !== 's3' && flags.provider && !flags.endpoint) warnings.push('Set storage.endpoint in simpcn.config.ts before planning or migrating.');
   if (!flags['public-base-url']) warnings.push('Set publicBaseUrl in simpcn.config.ts before building with the framework plugin.');
   warnings.push('The bucket must already exist; init does not create buckets or change public access.');
@@ -61,7 +61,7 @@ export async function initializeProject(input: Flags, cwd: string, options: Init
   if (!await exists(template)) await writeFile(template, 'AWS_ACCESS_KEY_ID=\nAWS_SECRET_ACCESS_KEY=\n# AWS_SESSION_TOKEN=\n', { flag: 'wx' });
   const ignorePath = path.join(directory, '.gitignore');
   const ignore = await exists(ignorePath) ? await readFile(ignorePath, 'utf8') : '';
-  const missing = ['.env', '.env.local', '.simpcn/'].filter(line => !ignore.split(/\r?\n/).includes(line));
+  const missing = ['.env', '.env.local', 'simpcn/.build/', 'simpcn/*.lock', 'simpcn/*.tmp'].filter(line => !ignore.split(/\r?\n/).includes(line));
   if (missing.length) await writeFile(ignorePath, ignore + (ignore.endsWith('\n') || !ignore ? '' : '\n') + missing.join('\n') + '\n');
   if (flags.framework === 'vite' || flags.framework === 'next') {
     const packageName = flags.framework === 'next' ? '@simpcn/next' : '@simpcn/vite';

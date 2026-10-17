@@ -91,7 +91,7 @@ AWS_SECRET_ACCESS_KEY=your-secret-key
 ```
 
 The CLI automatically loads `.env` and `.env.local` beside the discovered config;
-shell variables take precedence. Init adds these files and `.simpcn/` to
+shell variables take precedence. Init adds these files, `simpcn/.build/`, and temporary state locks/files to
 `.gitignore`. Keep credentials out of `VITE_` and `NEXT_PUBLIC_` variables.
 
 ## Framework configuration
@@ -130,10 +130,13 @@ remotely. Successful progress survives partial failure. Framework builds read
 fresh local bytes and verified deployment state without contacting storage.
 They fail for missing public URLs or stale/missing managed asset verification.
 
-The default `.simpcn/manifest.json` is the last complete local migration baseline;
-`.simpcn/deployment-state.json` records uploads and verification separately.
-Keep matching deployment-state artifacts available for CI builds, or run migration
-as a separate credentialed step. A local record does not prove current anonymous
+The default `simpcn/.build/manifest.json` is the last complete local migration baseline;
+`simpcn/deployment-state.json` records uploads and verification separately.
+Commit the deployment state with your config and matching source/public assets after migration.
+A fresh CI checkout can then build without storage credentials or a migration step.
+Init creates or updates `.gitignore` to keep `simpcn/.build/` local.
+Existing explicit paths remain supported; to adopt this layout, update `stateFile`
+and `manifestFile`, move the existing state, and ensure Git tracks its new location. A local record does not prove current anonymous
 access or CDN freshness. Source and public files stay in place.
 
 ## v0 scope

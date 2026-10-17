@@ -81,7 +81,7 @@ describe('CLI commands', () => {
     expect(await cli(['plan', '--check-remote', '--overwrite', '--json'])).toBe(0);
     expect(JSON.parse(stdout).remote[0].decision).toBe('replace');
     expect(upload).not.toHaveBeenCalled();
-    expect((await readdir(cwd)).includes('.simpcn')).toBe(false);
+    expect((await readdir(cwd)).includes('simpcn')).toBe(false);
   });
   it('migrates, persists the baseline, skips repeat runs, and reports removals', async () => {
     await config();
@@ -151,7 +151,7 @@ describe('CLI commands', () => {
     });
     expect(await cli(['migrate', '--json'])).toBe(1);
     expect(JSON.parse(stdout).summary).toMatchObject({ uploaded: 1, failed: 1 });
-    expect((await readdir(path.join(cwd, '.simpcn'))).includes('manifest.json')).toBe(false);
+    expect((await readdir(path.join(cwd, 'simpcn', '.build'))).includes('manifest.json')).toBe(false);
     uploads.mockRestore();
     expect(await cli(['migrate', '--json'])).toBe(0);
     expect(JSON.parse(stdout).summary).toMatchObject({ uploaded: 1, skipped: 1 });
@@ -178,7 +178,7 @@ describe('configuration', () => {
     await mkdir(child);
     const resolved = await loadConfig({ root: '.', concurrency: '3', exclude: ['**/*.svg'] }, child);
     expect(resolved.root).toBe(child);
-    expect(resolved.stateFile).toBe(path.join(cwd, '.simpcn', 'deployment-state.json'));
+    expect(resolved.stateFile).toBe(path.join(cwd, 'simpcn', 'deployment-state.json'));
     expect(resolved.concurrency).toBe(3);
     expect(resolved.exclude).toEqual(['**/*.svg']);
     expect((await loadConfig({}, child)).root).toBe(path.join(cwd, 'public'));

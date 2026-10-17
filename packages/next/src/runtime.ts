@@ -6,7 +6,7 @@ import type { DeliveryOptions } from './map.js';
 
 /** Compile input only. Next bundles both files into client/server artifacts; runtime never reads state. */
 export async function generateRuntime(cwd: string, options: DeliveryOptions): Promise<string> {
-  const directory = path.join(cwd, '.simpcn', 'next');
+  const directory = path.join(cwd, 'simpcn', '.build', 'next');
   const runtime = await readFile(fileURLToPath(import.meta.resolve('@simpcn/core/delivery')), 'utf8');
   const digest = (source: string) => createHash('sha256').update(source).digest('hex').slice(0, 16);
   const runtimeName = `delivery-${digest(runtime)}.mjs`;

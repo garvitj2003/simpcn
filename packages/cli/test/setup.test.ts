@@ -2,6 +2,8 @@ import { beforeEach, afterEach, expect, it, vi } from 'vitest';
 import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { initializeProject } from '../src/init.js';
 import { loadEnvironment } from '../src/environment.js';
 import { loadConfig } from '../src/config.js';
@@ -144,4 +146,30 @@ it('cancels the wizard without writing configuration', async () => {
   expect(code).toBe(130);
   expect(output).toContain('Setup cancelled');
   await expect(readFile(path.join(cwd, 'simpcn.config.ts'))).rejects.toMatchObject({ code: 'ENOENT' });
+});
+
+const git = promisify(execFile);
+it.each([false, true])('keeps deployment state trackable and ignores generated files (existing ignore: %s)', async existing => {
+  await pkg();
+  if (existing) await writeFile(path.join(cwd, '.gitignore'), 'node_modules/\ncustom-output/');
+  await initializeProject({ yes: true }, cwd);
+  await git('git', ['init', '--quiet', cwd]);
+  await mkdir(path.join(cwd, 'simpcn', '.build'), { recursive: true });
+  const tracked = ['simpcn.config.ts', 'simpcn/deployment-state.json'];
+  const ignored = ['simpcn/.build/manifest.json', 'simpcn/.build/next/helper.js', 'simpcn/deployment-state.json.lock', 'simpcn/deployment-state.json.test.tmp', '.env.local'];
+  for (const file of tracked) {
+    await expect(git('git', ['check-ignore', '--no-index', file], { cwd })).rejects.toMatchObject({ code: 1 });
+  }
+  const result = await git('git', ['check-ignore', '--no-index', ...ignored], { cwd });
+  expect(result.stdout.trim().split('\n')).toEqual(ignored);
+  const config = await loadConfig({}, cwd);
+  expect(config.stateFile).toBe(path.join(cwd, 'simpcn/deployment-state.json'));
+  expect(config.manifestFile).toBe(path.join(cwd, 'simpcn/.build/manifest.json'));
+  if (existing) expect(await readFile(path.join(cwd, '.gitignore'), 'utf8')).toContain('node_modules/\ncustom-output/\n');
+});
+it('preserves explicitly configured legacy state and manifest paths', async () => {
+  await writeFile(path.join(cwd, 'simpcn.config.ts'), 'export default {storage:{bucket:"test"},stateFile:".simpcn/deployment-state.json",manifestFile:".simpcn/manifest.json"}');
+  const config = await loadConfig({}, cwd);
+  expect(config.stateFile).toBe(path.join(cwd, '.simpcn/deployment-state.json'));
+  expect(config.manifestFile).toBe(path.join(cwd, '.simpcn/manifest.json'));
 });

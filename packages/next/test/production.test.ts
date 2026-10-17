@@ -55,8 +55,8 @@ for (const bundler of ['turbopack', 'webpack']) it(`unchanged JSX emits direct C
     await writeFile(path.join(root, 'next.config.ts'), `import type {NextConfig} from 'next'; import {withSimpcn} from '@simpcn/next'; const config:NextConfig={basePath:'/docs',turbopack:{root:${JSON.stringify(repo)}},experimental:{cpus:1}}; export default withSimpcn(config, {cwd:${JSON.stringify(root)}});`);
     await writeFile(path.join(root, 'simpcn.config.ts'), `export default {exclude:['local-only.png'],storage:{bucket:'test',prefix:'assets'},publicBaseUrl:${JSON.stringify(cdnBase)}};`);
     const manifest = await generateManifest({ root: path.join(root, 'public'), exclude: ['local-only.png'] });
-    await mkdir(path.join(root, '.simpcn'));
-    await writeFile(path.join(root, '.simpcn/deployment-state.json'), JSON.stringify({ version: 1, target: { service: 'aws-s3:us-east-1', bucket: 'test', prefix: 'assets' }, assets: manifest.assets.map(asset => ({ asset, key: 'assets/' + asset.storageKey, status: 'verified', verifiedAt: 'fixture', cacheControl: 'public, max-age=0, must-revalidate' })) }));
+    await mkdir(path.join(root, 'simpcn'));
+    await writeFile(path.join(root, 'simpcn/deployment-state.json'), JSON.stringify({ version: 1, target: { service: 'aws-s3:us-east-1', bucket: 'test', prefix: 'assets' }, assets: manifest.assets.map(asset => ({ asset, key: 'assets/' + asset.storageKey, status: 'verified', verifiedAt: 'fixture', cacheControl: 'public, max-age=0, must-revalidate' })) }));
     await exec(process.execPath, [nextBin, 'build', `--${bundler}`], { cwd: root, env: { ...process.env, NODE_ENV: 'production', NEXT_TELEMETRY_DISABLED: '1' }, timeout: 120000, maxBuffer: 2 * 1024 * 1024 }).catch(error => { throw new Error(`${error.stdout}\n${error.stderr}`); });
     expect(await readFile(path.join(root, 'app/page.jsx'), 'utf8')).toBe(source);
     expect(await readFile(path.join(root, 'public/images/logo.svg'), 'utf8')).toBe(bytes);
@@ -71,7 +71,7 @@ for (const bundler of ['turbopack', 'webpack']) it(`unchanged JSX emits direct C
     expect(unmanaged).toContain('/_next/image?');
     expect(html).toMatch(new RegExp(`id="client"[^>]+src="${cdnBase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}images/logo\\.svg"`));
     // Model deployment without the build machine's manifests or original public files.
-    await rm(path.join(root, '.simpcn'), { recursive: true, force: true });
+    await rm(path.join(root, 'simpcn'), { recursive: true, force: true });
     await rm(path.join(root, 'public'), { recursive: true, force: true });
     // Serve the actual built application, then follow its emitted src to the independent asset origin.
     const portProbe = createServer();

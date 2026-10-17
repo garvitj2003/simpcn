@@ -26,3 +26,7 @@ Thumbs.db
 
 # Local npm package archives
 artifacts/
+
+simpcn/.build/
+simpcn/*.lock
+simpcn/*.tmp

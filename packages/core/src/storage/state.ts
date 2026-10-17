@@ -39,7 +39,7 @@ export function validateDeploymentState(value: unknown, target: StorageTarget): 
 
 /** Atomic JSON writes and an exclusive lock for one local migration at a time. */
 export class LocalDeploymentStateStore implements DeploymentStateStore {
-  constructor(readonly filename = '.simpcn/deployment-state.json') {}
+  constructor(readonly filename = 'simpcn/deployment-state.json') {}
 
   async acquire(target: StorageTarget): Promise<DeploymentSession> {
     validateTarget(target);

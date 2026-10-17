@@ -26,8 +26,8 @@ beforeEach(async () => {
 afterEach(async () => { await rm(cwd, { recursive: true, force: true }); });
 async function state() {
   const manifest = await generateManifest({ root: path.join(cwd, 'public') });
-  await mkdir(path.join(cwd, '.simpcn'), { recursive: true });
-  await writeFile(path.join(cwd, '.simpcn/deployment-state.json'), JSON.stringify({ version: 1, target: { service: 'aws-s3:us-east-1', bucket: 'test', prefix: '' }, assets: manifest.assets.map(asset => ({ asset, key: asset.storageKey, status: 'verified', verifiedAt: 'fixture', cacheControl: 'public, max-age=0, must-revalidate' })) }));
+  await mkdir(path.join(cwd, 'simpcn'), { recursive: true });
+  await writeFile(path.join(cwd, 'simpcn/deployment-state.json'), JSON.stringify({ version: 1, target: { service: 'aws-s3:us-east-1', bucket: 'test', prefix: '' }, assets: manifest.assets.map(asset => ({ asset, key: asset.storageKey, status: 'verified', verifiedAt: 'fixture', cacheControl: 'public, max-age=0, must-revalidate' })) }));
 }
 it('development and deployed server config do not require local build inputs', async () => {
   const original = { basePath: '/docs' };

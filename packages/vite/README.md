@@ -59,7 +59,7 @@ export default {
     "region": "us-east-1",
     "prefix": "mvp"
   },
-  "stateFile": ".simpcn/deployment-state.json"
+  "stateFile": "simpcn/deployment-state.json"
 };
 ```
 

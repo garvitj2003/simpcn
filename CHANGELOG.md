@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- Keep default deployment state in `simpcn/deployment-state.json` for Git and CI; ignore generated inventory and Next.js helpers under `simpcn/.build/`. Existing explicit paths remain supported.
+
 ## 0.1.1
 
 - Bundle the CLI's storage SDK and terminal dependencies, using only input and select prompts.
