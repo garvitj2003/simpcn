@@ -40,7 +40,7 @@ export function parseArguments(args: string[]): { command?: string; flags: Flags
   if (values.overwrite && command !== 'migrate' && !(command === 'plan' && values['check-remote'])) {
     throw new Error('--overwrite is only valid with migrate or plan --check-remote');
   }
-  if (values.framework && !['vite', 'core', 'next'].includes(values.framework)) throw new Error('framework must be vite, next or core');
+  if (values.framework && !['vite', 'core', 'next', 'expo'].includes(values.framework)) throw new Error('framework must be vite, next, expo or core');
   if ((values.framework || values.yes || values['skip-install'] || values['integration-package']) && command !== 'init') throw new Error('Setup options are only valid with init');
   return { command, flags: values as Flags };
 }
@@ -53,7 +53,7 @@ Commands:
   migrate              Reconcile, upload and verify assets (--overwrite to replace)
 
 Options:
-  --framework <name>  vite, next or core
+  --framework <name>  vite, next, expo (experimental) or core
   -y, --yes            Accept defaults without prompts
   --skip-install      Configure only; install integration manually
   --integration-package <path>  Local integration .tgz archive for unpublished testing

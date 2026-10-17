@@ -144,7 +144,8 @@ export async function initializeConfig(flags: Flags, cwd: string): Promise<strin
     serialized = serialized.replace('"storage": {', `"storage": {\n    // ${note}\n    // This is the upload API, not the public asset URL.\n    // endpoint: "${example}",`);
   }
   const isR2 = content.storage.provider === 'r2';
-  let publicNote = content.publicBaseUrl ? '' : '\n  // Required for production builds; include your asset prefix. Never auto-derived.\n  // publicBaseUrl: "https://cdn.example.com/assets/",\n';
+  const publicPrefix = content.storage.prefix.replace(/\/+$/, '').split('/').filter(Boolean).map(encodeURIComponent).join('/');
+  let publicNote = content.publicBaseUrl ? '' : `\n  // Required for production builds; include your asset prefix. Never auto-derived.\n  // publicBaseUrl: "https://cdn.example.com/${publicPrefix ? publicPrefix + '/' : ''}",\n`;
   if (isR2) {
     serialized = serialized.replace('"storage": {', '"storage": {\n    // R2: remove /bucket-name from the copied S3 API URL.\n    // Use only https://YOUR_ACCOUNT_ID.r2.cloudflarestorage.com; set the bucket separately below.');
     const prefix = content.storage.prefix.replace(/\/+$/, '');

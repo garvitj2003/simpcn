@@ -82,6 +82,10 @@ export function WorkflowSection() {
 
 const questions = [
   {
+    question: "Does Simpcn work with React Native?",
+    answer: <>The experimental Expo adapter handles static PNG/JPEG sources, iOS/Android variants, and @2x/@3x density files. Packed installation and platform exports are tested; device, EAS, and OTA validation remain. It does not cover Expo web or bare React Native. <Link href="/docs/react-native-expo">Explore the Expo integration.</Link></>,
+  },
+  {
     question: "Does Simpcn edit source files?",
     answer: <>The migration and supported reference transforms do not rewrite application source files. Original <code>public/</code> files stay in place. The framework integration changes supported references in production build output. <Link href="/docs/supported-references">Check the reference support guide.</Link></>,
   },

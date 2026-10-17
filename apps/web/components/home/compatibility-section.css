@@ -76,3 +76,10 @@
   .compatibility-frameworks button[aria-pressed="true"] { background: Highlight; color: HighlightText; }
   .compatibility-editor .site-code-block { border: 1px solid CanvasText; background: Canvas; }
 }
+
+.compatibility-status { margin: 16px 0 0; max-width: 42ch; font-size: 16px; color: var(--foreground); line-height: 1.6; }
+
+.compatibility-package-managers { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+.compatibility-package-managers button { min-height: 44px; padding: 8px 14px; border: 0; background: transparent; color: var(--foreground); font: inherit; font-size: 14px; cursor: pointer; }
+.compatibility-package-managers button[aria-pressed="true"] { background: var(--foreground); color: var(--background); }
+.compatibility-editor > #compatibility-command + .site-code-block { margin-top: 16px; }

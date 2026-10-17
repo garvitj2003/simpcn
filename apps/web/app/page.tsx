@@ -6,6 +6,8 @@ import { ProblemSolutionSection, WorkflowSection, CommunitySection, SiteFooter }
 import { CompatibilitySection } from "@/components/home/compatibility-section";
 import { AssetReferenceDemo } from "@/components/home/asset-reference-demo";
 import { SectionMotion } from "@/components/motion/section-motion";
+import Link from "next/link";
+import { NativeImagesSection } from "@/components/home/native-images-section";
 import { QuickInstall } from "@/components/home/quick-install";
 import "@/components/shared/typography.css";
 
@@ -31,6 +33,7 @@ export default function Home() {
           <h1 id="hero-title"><span>Your code stays the same.</span>{" "}<span>The assets move to CDN.</span></h1>
         </div>
         <p className="hero-description">Make asset migration easier. Move your <span className="public-highlight"><code>public/</code></span> assets to your desired storage provider, with supported asset references rewritten automatically during production builds—without manually updating your source code.</p>
+        <p className="hero-platforms">Next.js · Vite · <Link href="/docs/react-native-expo">React Native with Expo (experimental)</Link></p>
         <div className="hero-actions"><ButtonLink href={start}>Get Started <Arrow /></ButtonLink><ButtonLink variant="secondary" href={repo}><GithubIcon />View on GitHub <Arrow diagonal /></ButtonLink></div>
         </div>
         <DeliveryPreview />
@@ -41,6 +44,7 @@ export default function Home() {
     <ProblemSolutionSection />
     <AssetReferenceDemo />
     <WorkflowSection />
+    <NativeImagesSection />
     <CompatibilitySection />
     <CommunitySection />
     </SectionMotion>

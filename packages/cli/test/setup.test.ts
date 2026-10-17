@@ -127,7 +127,7 @@ it('uses menus and defers endpoint and public URL input to config', async () => 
   const choices = ['core', 'minio'];
   const select = vi.fn(async () => choices.shift()!);
   const ask = vi.fn(async (_message: string, fallback: string) => fallback);
-  const result = await initializeProject({}, cwd, { interactive: true, select, ask });
+  const result = await initializeProject({}, cwd, { interactive: true, select, ask, install: vi.fn(async () => {}) });
   expect(select).toHaveBeenCalledTimes(2);
   expect(ask.mock.calls.map(([message]) => message).join(' ')).not.toMatch(/endpoint|URL/i);
   expect(result.warnings.join(' ')).toContain('storage.endpoint');
@@ -172,4 +172,70 @@ it('preserves explicitly configured legacy state and manifest paths', async () =
   const config = await loadConfig({}, cwd);
   expect(config.stateFile).toBe(path.join(cwd, '.simpcn/deployment-state.json'));
   expect(config.manifestFile).toBe(path.join(cwd, '.simpcn/manifest.json'));
+});
+it('detects Expo ahead of web frameworks and installs its matching adapter', async () => {
+  await pkg({ packageManager: 'pnpm@12.11.2', dependencies: { expo: '58.0.14', next: '^16.4', vite: '^8' } });
+  const metro = 'module.exports = existingWrapper(existingConfig);\n';
+  await writeFile(path.join(cwd, 'metro.config.js'), metro);
+  const install = vi.fn(async () => {});
+  let out = '';
+  expect(await runCli(['init', '--yes', '--json'], { cwd, setup: { install }, stdout: text => { out += text; }, stderr: () => {} })).toBe(0);
+  expect(JSON.parse(out).framework).toBe('expo');
+  expect(install).toHaveBeenCalledWith('pnpm', ['add', '-D', `@simpcn/expo@${version}`], cwd);
+  const config = await loadConfig({}, cwd);
+  expect(config.root).toBe(path.join(cwd, 'assets/cdn'));
+  expect(config.storage.prefix).toBe('releases/v1');
+  const source = await readFile(path.join(cwd, 'simpcn.config.ts'), 'utf8');
+  expect(source).toContain('unique immutable prefix');
+  expect(source).toContain('https://cdn.example.com/releases/v1/');
+  const warnings = JSON.parse(out).warnings.join(' ');
+  expect(warnings).toContain('@simpcn/expo/metro');
+  expect(await readFile(path.join(cwd, 'metro.config.js'), 'utf8')).toBe(metro);
+});
+it('offers Expo in the wizard without endpoint or credential prompts', async () => {
+  await pkg({ dependencies: { expo: '58.0.14' } });
+  const select = vi.fn(async (_question, _choices, fallback) => fallback);
+  const ask = vi.fn(async (_question, fallback) => fallback);
+  const result = await initializeProject({}, cwd, { interactive: true, select, ask, install: vi.fn(async () => {}) });
+  expect(result.framework).toBe('expo');
+  expect(select.mock.calls[0][2]).toBe('expo');
+  expect(select.mock.calls[0][1]).toContainEqual({ name: 'Expo (iOS / Android, experimental)', value: 'expo' });
+  expect(ask.mock.calls.map(([question]) => question).join(' ')).not.toMatch(/endpoint|credentials|URL/i);
+});
+it('installs a local Expo adapter archive and preserves custom root and release namespace', async () => {
+  await pkg({ packageManager: 'pnpm@12.11.2', dependencies: { expo: '58.0.14' } });
+  const archive = path.join(cwd, 'simpcn-expo-test.tgz');
+  await writeFile(archive, 'fixture');
+  const install = vi.fn(async () => {});
+  let out = '';
+  expect(await runCli(['init', '--framework', 'expo', '--root', 'images', '--prefix', 'release-42', '--integration-package', archive, '--json'], { cwd, setup: { install }, stdout: text => { out += text; }, stderr: () => {} })).toBe(0);
+  expect(JSON.parse(out).framework).toBe('expo');
+  expect(install).toHaveBeenCalledWith('pnpm', ['add', '-D', archive], cwd);
+  const config = await loadConfig({}, cwd);
+  expect(config.root).toBe(path.join(cwd, 'images'));
+  expect(config.storage.prefix).toBe('release-42');
+});
+it('preserves R2 guidance in Expo config and recognizes an installed adapter', async () => {
+  await pkg({ dependencies: { expo: '58.0.14' }, devDependencies: { '@simpcn/expo': '0.1.2' } });
+  const install = vi.fn(async () => {});
+  const result = await initializeProject({ yes: true, provider: 'r2', prefix: 'releases/mobile-v2' }, cwd, { install });
+  expect(install).not.toHaveBeenCalled();
+  const source = await readFile(result.config, 'utf8');
+  expect(source).toContain('remove /bucket-name');
+  expect(source).toContain('https://pub-YOUR_ID.r2.dev/releases/mobile-v2/');
+  expect(source).toContain('Native releases');
+});
+it('rejects an empty native release prefix before writing config', async () => {
+  await pkg({ dependencies: { expo: '58.0.14' } });
+  await expect(initializeProject({ yes: true, prefix: '' }, cwd)).rejects.toThrow('nonempty immutable release prefix');
+  await expect(readFile(path.join(cwd, 'simpcn.config.ts'))).rejects.toMatchObject({ code: 'ENOENT' });
+});
+it('honors skip-install even when a local Expo archive is supplied', async () => {
+  await pkg({ dependencies: { expo: '58.0.14' } });
+  const archive = path.join(cwd, 'adapter.tgz');
+  await writeFile(archive, 'fixture');
+  const install = vi.fn(async () => {});
+  const result = await initializeProject({ yes: true, 'skip-install': true, 'integration-package': archive }, cwd, { install });
+  expect(install).not.toHaveBeenCalled();
+  expect(result.warnings.join(' ')).toContain('Install @simpcn/expo');
 });

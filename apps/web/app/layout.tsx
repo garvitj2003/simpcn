@@ -34,11 +34,11 @@ export const metadata: Metadata = {
   metadataBase: siteOrigin(),
   applicationName: "Simpcn",
   alternates: siteOrigin() ? { canonical: "/" } : undefined,
-  openGraph: { title: "Simpcn — Same source. CDN delivery.", description: "Move public assets to CDN-backed storage. Keep source code unchanged and development local, with Next.js and Vite integrations.", siteName: "Simpcn", type: "website", locale: "en_US", images: [socialPreview] },
+  openGraph: { title: "Simpcn — Same source. CDN delivery.", description: "Move public assets to CDN-backed storage. Keep source unchanged with Next.js, Vite, and experimental React Native with Expo integration.", siteName: "Simpcn", type: "website", locale: "en_US", images: [socialPreview] },
   twitter: { card: "summary_large_image", title: "Simpcn — Same source. CDN delivery.", description: "Supported asset references move to the CDN during production builds. Source stays the same.", images: [socialPreview] },
   robots: { index: true, follow: true },
   title: "Simpcn — Your code stays the same. The assets move to CDN.",
-  description: "Move public assets to CDN-backed storage. Simpcn rewrites supported production asset references for Next.js and Vite while keeping development local.",
+  description: "Move public assets to CDN-backed storage. Simpcn rewrites supported production asset references for Next.js, Vite, and experimental React Native with Expo while keeping development local.",
 };
 
 export const viewport: Viewport = {

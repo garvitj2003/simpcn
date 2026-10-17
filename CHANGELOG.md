@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3
+
+- Add experimental React Native with Expo image delivery: static imports and requires, iOS/Android image families, density selection, logical dimensions, and verified-state checks.
+- Detect Expo during CLI setup and install the matching adapter; preserve Metro configuration and provide immutable release namespace guidance.
+- Add Expo website documentation, landing-page examples, and npm/pnpm/Yarn/Bun command selectors.
+- Verify packed CLI/core/Expo installation, native platform exports and warm-cache behavior in disposable consumer projects. Device, EAS and OTA validation remain outstanding.
+
 ## 0.1.2
 
 - Keep default deployment state in `simpcn/deployment-state.json` for Git and CI; ignore generated inventory and Next.js helpers under `simpcn/.build/`. Existing explicit paths remain supported.

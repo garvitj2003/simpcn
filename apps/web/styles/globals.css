@@ -47,3 +47,7 @@ h1 { margin: 0 0 28px; font-size: clamp(52px, 5.6vw, 80px); line-height: 1.02; f
 .hero-background::after { content: ""; position: absolute; inset: 0; background: url("/hero-grain.svg") repeat; background-size: 180px 180px; opacity: .12; mix-blend-mode: soft-light; pointer-events: none; }
 @media (prefers-contrast: more) { .hero-background { opacity: .35; } }
 @media (forced-colors: active) { .hero-background { display: none; } }
+
+.hero-platforms { margin: 16px 0 0; color: var(--foreground); font-size: 15px; line-height: 1.65; }
+.hero-platforms a { text-decoration: underline; text-underline-offset: 4px; }
+.hero-platforms a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }

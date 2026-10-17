@@ -1,0 +1,40 @@
+{
+  "name": "@simpcn/expo",
+  "version": "0.1.3",
+  "type": "commonjs",
+  "exports": {
+    "./metro": {
+      "types": "./src/metro.d.cts",
+      "require": "./src/metro.cjs",
+      "default": "./src/metro.cjs"
+    }
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@simpcn/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@babel/core": "7.29.7"
+  },
+  "description": "Experimental Expo Metro integration for verified CDN image delivery.",
+  "license": "MIT",
+  "files": [
+    "src/*.cjs",
+    "src/*.d.cts"
+  ],
+  "engines": {
+    "node": ">=24.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garvitj2003/simpcn.git",
+    "directory": "packages/expo"
+  },
+  "homepage": "https://github.com/garvitj2003/simpcn#readme",
+  "bugs": {
+    "url": "https://github.com/garvitj2003/simpcn/issues"
+  },
+  "author": "Garvit jain"
+}

@@ -244,6 +244,16 @@ importers:
         specifier: ^2.7.0
         version: 2.7.0
 
+  packages/expo:
+    dependencies:
+      '@simpcn/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@babel/core':
+        specifier: 7.29.7
+        version: 7.29.7(supports-color@7.2.0)
+
   packages/next:
     dependencies:
       '@simpcn/core':

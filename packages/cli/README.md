@@ -21,7 +21,7 @@ The Next adapter supports automatic verified static `next/image` references.
 CSS rewriting is not implemented.
 
 The bucket defaults to a normalized package.json project name (directory name as
-fallback). The prefix defaults to `assets`. Both are editable. The bucket must
+fallback). The prefix defaults to `assets` for web integrations. Both are editable. The bucket must
 already exist: initialization does not create buckets or change access policies.
 An existing configuration requires `--force` to replace.
 
@@ -116,3 +116,25 @@ and release. Workspace development continues to use pnpm.
 Commit `simpcn/deployment-state.json` after migration with the matching assets and
 root `simpcn.config.ts`. CI builds use this verification record without storage credentials.
 The local manifest defaults to `simpcn/.build/manifest.json`. Existing explicit paths remain supported.
+
+
+## Experimental Expo setup
+
+Expo projects are detected before Next.js and Vite. `--framework expo` selects the
+prototype explicitly and defaults to `root: "assets/cdn"` and prefix `releases/v1`.
+Use a distinct immutable prefix and matching publicBaseUrl for every native release;
+retain old namespaces for installed apps and OTA rollback. Keep icons, splash images
+and offline essentials outside the managed root or excluded.
+
+Expo setup installs the matching `@simpcn/expo` version using the project package
+manager. Device/EAS/OTA validation is pending. For local development testing,
+install matching local core and CLI archives, then pass the adapter archive:
+
+```sh
+pnpm exec simpcn init --framework expo --yes --integration-package /absolute/path/simpcn-expo-0.1.3.tgz
+```
+
+Init preserves `metro.config.js` and prints instructions for wrapping the existing
+Expo Metro configuration with `withSimpcn()` from `@simpcn/expo/metro`. It loads
+endpoint/public URL values from config and credentials from the existing environment
+workflow; no additional endpoint or credential prompts are introduced.
